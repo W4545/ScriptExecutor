@@ -26,6 +26,10 @@ shadowJar {
     relocate 'kotlin', 'scriptexecutor.kotlin'
 }
 
+processResources {
+    expand(version: version)
+}
+
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
