@@ -6,6 +6,6 @@ import org.bukkit.command.CommandSender
 
 object SubCommandList: CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        TODO()
+        TODO("Need to finish list command")
     }
 }
