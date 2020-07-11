@@ -1,0 +1,7 @@
+# DO NOT EDIT VERSION!
+# This line helps the plugin parse the config better over updates
+version: 1
+
+
+scripts:
+  hello: mkdir hello

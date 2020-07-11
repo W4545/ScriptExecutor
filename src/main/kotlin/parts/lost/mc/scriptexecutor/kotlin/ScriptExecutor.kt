@@ -1,21 +1,21 @@
 package parts.lost.mc.scriptexecutor.kotlin
 
 import org.bukkit.plugin.java.JavaPlugin
+import parts.lost.mc.scriptexecutor.kotlin.config.ConfigManager
 import java.util.logging.Level
 
 class ScriptExecutor : JavaPlugin() {
-    override fun onEnable() {
-        for (commandTemplate in Commands.commands()) {
-            val pluginCommand = getCommand(commandTemplate.name)!!
 
-            pluginCommand.setExecutor(commandTemplate)
-            pluginCommand.tabCompleter = commandTemplate
-        }
+    override fun onEnable() {
+        this.saveDefaultConfig()
+        ConfigManager.config = config
+
+        Commands.initCommands(this)
 
         logger.log(Level.INFO, "ScriptExecutor Enabled")
     }
 
     override fun onDisable() {
-        logger.log(Level.INFO, "Disabling ScriptExecutor")
+        logger.log(Level.INFO, "ScriptExecutor Disabled")
     }
 }
