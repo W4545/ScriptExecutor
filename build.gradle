@@ -24,6 +24,7 @@ dependencies {
 shadowJar {
     relocate 'org.jetbrains', 'scriptexecutor.org.jetbrains'
     relocate 'org.intellij', 'scriptexecutor.org.intellij'
+    relocate 'kotlinx', 'scriptexecutor.kotlinx'
     relocate 'kotlin', 'scriptexecutor.kotlin'
 }
 
