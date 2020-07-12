@@ -24,7 +24,7 @@ object Exec: CommandExecutor {
                     sender.sendMessage("Script execution started.")
                     val process = processBuilder.start()
 
-                    GlobalScope.launch(Dispatchers.IO) {
+                    val job = GlobalScope.launch(Dispatchers.IO) {
 
                         val bufferedReader = BufferedReader(InputStreamReader(process.inputStream))
                         var line: String? = ""
