@@ -1,10 +1,13 @@
 package parts.lost.mc.scriptexecutor.kotlin.commands.commandscriptexecute
 
+import kotlinx.coroutines.*
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import parts.lost.mc.scriptexecutor.kotlin.config.ConfigManager
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 object Exec: CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
@@ -17,15 +20,23 @@ object Exec: CommandExecutor {
                     sender.sendMessage("${ChatColor.RED}Unable to locate script entry in config")
                     sender.sendMessage(ConfigManager.getScripts().toString())
                 } else {
-                    // val process = Runtime.getRuntime().exec(script.second)
-
-//                    runBlocking {
-//                        launch(Dispatchers.Main) {
-//                            process.inputStream
-//                        }
-//                    }
-                    sender.sendMessage("${ChatColor.BLUE}${script.second}")
+                    val processBuilder = ProcessBuilder(script.second)
                     sender.sendMessage("Script execution started.")
+                    val process = processBuilder.start()
+
+                    GlobalScope.launch(Dispatchers.IO) {
+
+                        val bufferedReader = BufferedReader(InputStreamReader(process.inputStream))
+                        var line: String? = ""
+                        while (line != null) {
+                            line = bufferedReader.readLine()
+                            if (line != null)
+                                sender.sendMessage(line)
+                        }
+                        bufferedReader.close()
+                        process.waitFor()
+                        sender.sendMessage("Script execution completed.")
+                    }
                 }
 
             }
