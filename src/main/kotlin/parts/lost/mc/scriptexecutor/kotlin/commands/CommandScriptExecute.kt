@@ -9,9 +9,11 @@ import org.bukkit.command.TabCompleter
 import parts.lost.mc.scriptexecutor.kotlin.ScriptExecutor
 import parts.lost.mc.scriptexecutor.kotlin.commands.commandscriptexecute.Exec
 import parts.lost.mc.scriptexecutor.kotlin.commands.commandscriptexecute.Help
+import parts.lost.mc.scriptexecutor.kotlin.commands.commandscriptexecute.Running
 import parts.lost.mc.scriptexecutor.kotlin.commands.commandscriptexecute.SubCommandList
 import parts.lost.mc.scriptexecutor.kotlin.config.ConfigManager
 import parts.lost.mc.scriptexecutor.kotlin.interfaces.CommandInitializer
+import parts.lost.mc.scriptexecutor.kotlin.storage.Storage
 import java.util.*
 
 object CommandScriptExecute : CommandExecutor, TabCompleter, CommandInitializer {
@@ -25,6 +27,7 @@ object CommandScriptExecute : CommandExecutor, TabCompleter, CommandInitializer 
                 "exec" -> Exec.onCommand(sender, command, label, args.copyOfRange(1, args.size))
                 "help" -> Help.onCommand(sender, command, label, args.copyOfRange(1, args.size))
                 "list" -> SubCommandList.onCommand(sender, command, label, args.copyOfRange(1, args.size))
+                "running" -> Running.onCommand(sender, command, label, args.copyOfRange(1, args.size))
                 else -> sender.sendMessage("${ChatColor.RED}Please provide a valid subcommand. See /$label help for details")
             }
         }
@@ -34,9 +37,11 @@ object CommandScriptExecute : CommandExecutor, TabCompleter, CommandInitializer 
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): MutableList<String> {
         return if (args.size == 1 || (args.size == 2 && args[0] == "help"))
-            mutableListOf("exec", "help", "list")
+            mutableListOf("exec", "help", "list", "running")
         else if (args.size == 2 && args[0] == "exec")
-            ConfigManager.getScripts().map { it.first }.toMutableList()
+            ConfigManager.getScriptNames().toMutableList()
+        else if (args.size == 2 && args[0] == "running")
+            Storage.runningScripts.map { it.id }.toMutableList()
         else
             Collections.emptyList()
     }

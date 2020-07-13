@@ -4,4 +4,6 @@ version: 1
 
 
 scripts:
-  hello: mkdir hello
+  hello:
+    commands: [echo, Hello World!]
+    wrapOutput: true

@@ -12,7 +12,7 @@ object SubCommandList: CommandExecutor {
         if (args.isNotEmpty())
             sender.sendMessage("${ChatColor.RED}This subcommand does not take any arguments.")
         else
-            sender.sendMessage("Available scripts: ${ConfigManager.getScripts().joinToString(" ") { it.first }}")
+            sender.sendMessage("Available scripts: ${ConfigManager.getScriptNames().joinToString(" ")}")
 
         return true
     }

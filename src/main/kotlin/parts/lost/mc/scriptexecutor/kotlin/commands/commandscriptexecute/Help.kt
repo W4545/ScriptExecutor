@@ -20,13 +20,17 @@ object Help: CommandExecutor {
                     }
                     "list" -> {
                         sender.sendMessage("Description: Lists all registered scripts")
-                        sender.sendMessage("Usage: $/label list")
+                        sender.sendMessage("Usage: /$label list")
+                    }
+                    "running" -> {
+                        sender.sendMessage("Description: Lists all running scripts")
+                        sender.sendMessage("Usage: /$label running ${ChatColor.ITALIC}<optional subcommand>${ChatColor.RESET}")
                     }
                     else -> sender.sendMessage("This is not a valid subcommand. Do /$label help for more info.")
                 }
             }
             args.isEmpty() -> {
-                sender.sendMessage("Valid subcommands: exec, help, list.")
+                sender.sendMessage("Valid subcommands: exec, help, list, running.")
                 sender.sendMessage("Do /$label help <subcommand> for more info.")
             }
             else -> sender.sendMessage("${ChatColor.RED}This command takes one optional argument. See /$label help for details.")
