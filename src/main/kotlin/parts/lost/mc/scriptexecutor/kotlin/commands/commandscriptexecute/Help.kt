@@ -24,7 +24,11 @@ object Help: CommandExecutor {
                     }
                     "running" -> {
                         sender.sendMessage("Description: Lists all running scripts")
-                        sender.sendMessage("Usage: /$label running ${ChatColor.ITALIC}<optional subcommand>${ChatColor.RESET}")
+                        sender.sendMessage("Usage: /$label running ${ChatColor.ITALIC}<optional script>${ChatColor.RESET}")
+                    }
+                    "reload" -> {
+                        sender.sendMessage("Description: Reloads configuration from config file. All scripts must be stopped.")
+                        sender.sendMessage("Usage: /$label reload")
                     }
                     else -> sender.sendMessage("This is not a valid subcommand. Do /$label help for more info.")
                 }

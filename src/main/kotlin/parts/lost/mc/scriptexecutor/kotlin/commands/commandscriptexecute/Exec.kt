@@ -9,9 +9,7 @@ import parts.lost.mc.scriptexecutor.kotlin.config.ConfigManager
 import parts.lost.mc.scriptexecutor.kotlin.coroutines.async
 import parts.lost.mc.scriptexecutor.kotlin.storage.RunningScript
 import parts.lost.mc.scriptexecutor.kotlin.storage.Storage
-import java.io.BufferedReader
-import java.io.File
-import java.io.InputStreamReader
+import java.io.*
 
 object Exec: CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
@@ -28,40 +26,46 @@ object Exec: CommandExecutor {
                         processBuilder.directory(File(script.workingDirectory))
                     val scriptID = Storage.scriptName(script.name)
                     sender.sendMessage("[$scriptID] Script execution starting.")
-                    val process = processBuilder.start()
 
-                    val job = if (script.wrapOutput) {
-                        GlobalScope.launch(Dispatchers.IO) {
-                            BufferedReader(InputStreamReader(process.inputStream)).use { bufferedReader ->
-                                var line: String? = ""
-                                while (line != null) {
-                                    line = bufferedReader.readLine()
-                                    if (line != null)
-                                        sender.sendMessage(line)
+                    try {
+                        val process =processBuilder.start()
+
+                        val job = if (script.wrapOutput) {
+                            GlobalScope.launch(Dispatchers.IO) {
+                                BufferedReader(InputStreamReader(process.inputStream)).use { bufferedReader ->
+                                    var line: String? = ""
+                                    while (line != null) {
+                                        line = bufferedReader.readLine()
+                                        if (line != null)
+                                            sender.sendMessage("${ChatColor.DARK_GRAY}[${scriptID}] $line")
+                                    }
+                                    bufferedReader.close()
+                                    process.waitFor()
                                 }
-                                bufferedReader.close()
-                                process.waitFor()
                             }
+                        } else null
+
+                        val runningScript = RunningScript(scriptID, process, job, script)
+                        Storage.runningScripts.add(runningScript)
+
+
+                        val isAlive = GlobalScope.launch(Dispatchers.async) {
+                            delay(5000L)
+                            while (process.isAlive)
+                                delay(1000L)
+                            if (runningScript.inputJob?.isActive == true)
+                                runningScript.inputJob.cancel()
+                            sender.sendMessage("${ChatColor.BLUE}[${runningScript.id}] Script execution completed.")
+                            val success = Storage.runningScripts.remove(runningScript)
+                            if (!success)
+                                sender.sendMessage("${ChatColor.RED}Failed to remove running script from plugin storage.")
                         }
-                    } else null
 
-                    val runningScript = RunningScript(scriptID, process, job, script)
-                    Storage.runningScripts.add(runningScript)
-
-
-                    val isAlive = GlobalScope.launch(Dispatchers.async) {
-                        delay(5000L)
-                        while (process.isAlive)
-                            delay(1000L)
-                        if (runningScript.inputJob?.isActive == true)
-                            runningScript.inputJob.cancel()
-                        sender.sendMessage("Script execution completed.")
-                        val success = Storage.runningScripts.remove(runningScript)
-                        if (!success)
-                            sender.sendMessage("${ChatColor.RED}Failed to remove running script from plugin storage.")
+                        runningScript.isAliveJob = isAlive
+                    } catch (ex: IOException) {
+                        sender.sendMessage("${ChatColor.RED}An exception occurred while launching the process. The provided " +
+                                "working directory or commands are incorrect.")
                     }
-
-                    runningScript.isAliveJob = isAlive
                 }
 
             }

@@ -8,7 +8,7 @@ class ScriptExecutor : JavaPlugin() {
 
     override fun onEnable() {
         this.saveDefaultConfig()
-        ConfigManager.config = config
+        ConfigManager.plugin = this
 
         Commands.initCommands(this)
 
