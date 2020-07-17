@@ -6,4 +6,12 @@ version: 1
 scripts:
   hello:
     commands: [echo, Hello World!]
-    wrapOutput: true
+    configurations:
+      all:
+        wrapOutput: true
+        logFile: null
+        arguments: []
+      player:
+        wrapOutput: true
+      console:
+        logFile: ./plugins/ScriptExecutor/

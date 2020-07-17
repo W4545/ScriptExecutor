@@ -42,6 +42,8 @@ object CommandScriptExecute : CommandExecutor, TabCompleter, CommandInitializer 
             ConfigManager.getScriptNames().toMutableList()
         else if (args.size == 2 && args[0] == "running")
             Storage.runningScripts.map { it.id }.toMutableList()
+        else if (args.size == 3 && args[0] == "exec")
+            ConfigManager.getScriptSchemeConfigurations(args[1]).toMutableList()
         else
             Collections.emptyList()
     }

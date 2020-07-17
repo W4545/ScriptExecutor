@@ -12,21 +12,31 @@ object ConfigManager {
                 ?: Collections.emptyList()
     }
 
-    fun getVersion(): Int = plugin.config.getInt("version")
-
-    fun scripts(): List<ScriptConfiguration> {
-        return getScriptNames().map { getScript(it)!! }
+    fun getScriptSchemeConfigurations(script: String): List<String> {
+        return plugin.config.getConfigurationSection("scripts")?.getConfigurationSection(script)
+                ?.getConfigurationSection("configurations")?.getValues(false)?.map { it.key }
+                ?: Collections.emptyList()
     }
 
-    fun getScript(name: String): ScriptConfiguration? {
-        val configurationSection = plugin.config.getConfigurationSection("scripts.$name") ?: return null
+    fun getVersion(): Int = plugin.config.getInt("version")
 
-        val commands: List<String> = configurationSection.getStringList("commands")
+    fun scripts(configurationScheme: String = "all"): List<ScriptConfiguration> {
+        return getScriptNames().map { getScript(it, configurationScheme)!! }
+    }
 
-        val workingDirectory = configurationSection.getString("workingDirectory")
+    fun getScript(name: String, configurationScheme: String): ScriptConfiguration? {
+        val rootConfigurationSection = plugin.config.getConfigurationSection("scripts.$name") ?: return null
 
-        val wrapOutput = configurationSection.getBoolean("wrapOutput")
+        val commands: List<String> = rootConfigurationSection.getStringList("commands")
 
-        return ScriptConfiguration(name, commands, workingDirectory, wrapOutput)
+        val configuredScriptSection = rootConfigurationSection.getConfigurationSection("configurations.$configurationScheme") ?: return null
+
+        val workingDirectory = configuredScriptSection.getString("workingDirectory")
+
+        val wrapOutput = configuredScriptSection.getBoolean("wrapOutput")
+
+        val logFile = configuredScriptSection.getString("logFile")
+
+        return ScriptConfiguration(name, commands, workingDirectory, wrapOutput, logFile)
     }
 }
