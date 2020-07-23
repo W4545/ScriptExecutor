@@ -59,30 +59,33 @@ object Exec: CommandExecutor {
 
                 val job = if (script.wrapOutput || logFile != null) {
                     GlobalScope.launch(Dispatchers.IO) {
-                        BufferedReader(InputStreamReader(process.inputStream)).use { bufferedReader ->
-                            if (logFile != null) {
-                                BufferedWriter(FileWriter(logFile)).use {
+                        try {
+                            BufferedReader(InputStreamReader(process.inputStream)).use { bufferedReader ->
+                                if (logFile != null) {
+                                    BufferedWriter(FileWriter(logFile)).use {
+                                        var line: String? = ""
+                                        while (line != null) {
+                                            line = bufferedReader.readLine()
+                                            if (line != null) {
+                                                if (script.wrapOutput)
+                                                    sender.sendMessage("${ChatColor.DARK_GRAY}[${scriptID}] $line")
+                                                it.appendln(line)
+                                            }
+                                        }
+                                    }
+                                } else {
                                     var line: String? = ""
                                     while (line != null) {
                                         line = bufferedReader.readLine()
                                         if (line != null) {
-                                            if (script.wrapOutput)
-                                                sender.sendMessage("${ChatColor.DARK_GRAY}[${scriptID}] $line")
-                                            it.appendln(line)
+                                            sender.sendMessage("${ChatColor.DARK_GRAY}[${scriptID}] $line")
                                         }
                                     }
                                 }
-                            } else {
-                                var line: String? = ""
-                                while (line != null) {
-                                    line = bufferedReader.readLine()
-                                    if (line != null) {
-                                        sender.sendMessage("${ChatColor.DARK_GRAY}[${scriptID}] $line")
-                                    }
-                                }
                             }
-
                             process.waitFor()
+                        } catch (ex: IOException) {
+                            sender.server.consoleSender.sendMessage("IO Worker for script $scriptID has been closed")
                         }
                     }
                 } else null

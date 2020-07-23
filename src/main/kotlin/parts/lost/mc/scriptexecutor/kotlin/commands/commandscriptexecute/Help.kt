@@ -30,6 +30,11 @@ object Help: CommandExecutor {
                         sender.sendMessage("Description: Reloads configuration from config file. All scripts must be stopped.")
                         sender.sendMessage("Usage: /$label reload")
                     }
+                    "cancel" -> {
+                        sender.sendMessage("Description: Requests the provided script to be terminated. " +
+                                "The script will attempt to shutdown properly.")
+                        sender.sendMessage("Usage: /$label cancel <script>")
+                    }
                     else -> sender.sendMessage("This is not a valid subcommand. Do /$label help for more info.")
                 }
             }

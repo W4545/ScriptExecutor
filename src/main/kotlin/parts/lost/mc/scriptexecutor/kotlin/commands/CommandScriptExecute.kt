@@ -19,15 +19,17 @@ object CommandScriptExecute : CommandExecutor, TabCompleter, CommandInitializer 
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
 
-        if (args.isEmpty())
-            sender.sendMessage("Please provide a subcommand. see /$label help for available subcommands.")
-        else {
+        if (args.isEmpty()) {
+            sender.sendMessage("${ChatColor.GOLD}ScriptExecutor running version: ${ChatColor.BLUE}${plugin.description.version}")
+            sender.sendMessage("See /$label help for available subcommands.")
+        } else {
             when(args[0]) {
                 "exec" -> Exec.onCommand(sender, command, label, args.copyOfRange(1, args.size))
                 "help" -> Help.onCommand(sender, command, label, args.copyOfRange(1, args.size))
                 "list" -> SubCommandList.onCommand(sender, command, label, args.copyOfRange(1, args.size))
                 "running" -> Running.onCommand(sender, command, label, args.copyOfRange(1, args.size))
                 "reload" -> Reload.onCommand(sender, command, label, args.copyOfRange(1, args.size))
+                "cancel" -> Cancel.onCommand(sender, command, label, args.copyOfRange(1, args.size))
                 else -> sender.sendMessage("${ChatColor.RED}Please provide a valid subcommand. See /$label help for details")
             }
         }
@@ -37,10 +39,10 @@ object CommandScriptExecute : CommandExecutor, TabCompleter, CommandInitializer 
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): MutableList<String> {
         return if (args.size == 1 || (args.size == 2 && args[0] == "help"))
-            mutableListOf("exec", "help", "list", "running", "reload")
+            mutableListOf("exec", "help", "list", "running", "reload", "cancel")
         else if (args.size == 2 && args[0] == "exec")
             ConfigManager.getScriptNames().toMutableList()
-        else if (args.size == 2 && args[0] == "running")
+        else if (args.size == 2 && (args[0] == "running" || args[0] == "cancel"))
             Storage.runningScripts.map { it.id }.toMutableList()
         else if (args.size == 3 && args[0] == "exec")
             ConfigManager.getScriptSchemeConfigurations(args[1]).toMutableList()
