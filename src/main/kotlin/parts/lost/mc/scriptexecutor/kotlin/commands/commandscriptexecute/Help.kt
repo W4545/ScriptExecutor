@@ -4,6 +4,7 @@ import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import parts.lost.mc.scriptexecutor.kotlin.commands.CommandScriptExecute
 
 object Help: CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
@@ -39,7 +40,7 @@ object Help: CommandExecutor {
                 }
             }
             args.isEmpty() -> {
-                sender.sendMessage("Valid subcommands: exec, help, list, running.")
+                sender.sendMessage("Valid subcommands: ${CommandScriptExecute.subCommands.joinToString(", ")}")
                 sender.sendMessage("Do /$label help <subcommand> for more info.")
             }
             else -> sender.sendMessage("${ChatColor.RED}This command takes one optional argument. See /$label help for details.")

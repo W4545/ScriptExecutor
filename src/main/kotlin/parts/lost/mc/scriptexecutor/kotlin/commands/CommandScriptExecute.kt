@@ -17,6 +17,8 @@ object CommandScriptExecute : CommandExecutor, TabCompleter, CommandInitializer 
 
     lateinit var plugin: ScriptExecutor
 
+    val subCommands = listOf("exec", "help", "list", "running", "reload", "cancel")
+
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
 
         if (args.isEmpty()) {
@@ -39,7 +41,7 @@ object CommandScriptExecute : CommandExecutor, TabCompleter, CommandInitializer 
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): MutableList<String> {
         return if (args.size == 1 || (args.size == 2 && args[0] == "help"))
-            mutableListOf("exec", "help", "list", "running", "reload", "cancel")
+            subCommands.toMutableList()
         else if (args.size == 2 && args[0] == "exec")
             ConfigManager.getScriptNames().toMutableList()
         else if (args.size == 2 && (args[0] == "running" || args[0] == "cancel"))
