@@ -6,7 +6,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import parts.lost.mc.scriptexecutor.kotlin.commands.CommandScriptExecute
+import parts.lost.mc.scriptexecutor.kotlin.ScriptExecutor
 import parts.lost.mc.scriptexecutor.kotlin.config.ConfigManager
 import parts.lost.mc.scriptexecutor.kotlin.config.ScriptConfiguration
 import parts.lost.mc.scriptexecutor.kotlin.coroutines.async
@@ -15,7 +15,6 @@ import parts.lost.mc.scriptexecutor.kotlin.storage.Storage
 import java.io.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.logging.Level
 
 object Exec: CommandExecutor {
@@ -23,8 +22,11 @@ object Exec: CommandExecutor {
         val script: ScriptConfiguration? = when(args.size) {
             2 -> ConfigManager.getScript(args[0], args[1])
             1 -> {
-                if (sender is Player && ConfigManager.getScriptSchemeConfigurations(args[0]).contains("player"))
-                    ConfigManager.getScript(args[0], "player")
+                if (sender is Player)
+                    if (ConfigManager.getScriptSchemeConfigurations(args[0]).contains("player"))
+                        ConfigManager.getScript(args[0], "player")
+                    else
+                        ConfigManager.getScript(args[0], "all")
                 else if (ConfigManager.getScriptSchemeConfigurations(args[0]).contains("console"))
                     ConfigManager.getScript(args[0], "console")
                 else
@@ -44,6 +46,7 @@ object Exec: CommandExecutor {
             val processBuilder = ProcessBuilder(script.commands)
             val logFile = if (script.logFile != null) {
                 processBuilder.redirectError(processBuilder.redirectInput())
+                processBuilder.redirectErrorStream(true)
                 val formatter = DateTimeFormatter.ofPattern("yy-MM-dd-HH:mm:ss")
                 val formatted = LocalDateTime.now().format(formatter)
                 File(script.logFile).mkdirs()
@@ -110,7 +113,7 @@ object Exec: CommandExecutor {
             } catch (ex: IOException) {
                 sender.sendMessage("${ChatColor.RED}An exception occurred while launching the process. The provided " +
                         "working directory or commands are incorrect.")
-                CommandScriptExecute.plugin.logger.log(Level.WARNING, "Unexpected error when launching process.", ex)
+                ScriptExecutor.plugin.logger.log(Level.WARNING, "Unexpected error when launching process.", ex)
             }
         }
 

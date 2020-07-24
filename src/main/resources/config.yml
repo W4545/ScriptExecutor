@@ -14,4 +14,4 @@ scripts:
       player:
         wrapOutput: true
       console:
-        logFile: ./plugins/ScriptExecutor/
+        logFile: ./plugins/ScriptExecutor/logs/

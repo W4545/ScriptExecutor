@@ -11,18 +11,16 @@ import parts.lost.mc.scriptexecutor.kotlin.commands.commandscriptexecute.*
 import parts.lost.mc.scriptexecutor.kotlin.config.ConfigManager
 import parts.lost.mc.scriptexecutor.kotlin.interfaces.CommandInitializer
 import parts.lost.mc.scriptexecutor.kotlin.storage.Storage
-import java.util.*
+import java.util.Collections
 
 object CommandScriptExecute : CommandExecutor, TabCompleter, CommandInitializer {
-
-    lateinit var plugin: ScriptExecutor
 
     val subCommands = listOf("exec", "help", "list", "running", "reload", "cancel")
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
 
         if (args.isEmpty()) {
-            sender.sendMessage("${ChatColor.GOLD}ScriptExecutor running version: ${ChatColor.BLUE}${plugin.description.version}")
+            sender.sendMessage("${ChatColor.GOLD}ScriptExecutor running version: ${ChatColor.BLUE}${ScriptExecutor.plugin.description.version}")
             sender.sendMessage("See /$label help for available subcommands.")
         } else {
             when(args[0]) {
@@ -52,9 +50,8 @@ object CommandScriptExecute : CommandExecutor, TabCompleter, CommandInitializer 
             Collections.emptyList()
     }
 
-    override fun initialize(plugin: ScriptExecutor) {
-        this.plugin = plugin
-        val command = plugin.getCommand("scriptexecute")!!
+    override fun initialize() {
+        val command = ScriptExecutor.plugin.getCommand("scriptexecute")!!
         command.tabCompleter = this
         command.setExecutor(this)
     }

@@ -4,7 +4,7 @@ import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
-import parts.lost.mc.scriptexecutor.kotlin.commands.CommandScriptExecute
+import parts.lost.mc.scriptexecutor.kotlin.ScriptExecutor
 import parts.lost.mc.scriptexecutor.kotlin.storage.Storage
 
 object Reload: CommandExecutor {
@@ -13,7 +13,7 @@ object Reload: CommandExecutor {
             sender.sendMessage("${ChatColor.RED}This command does not take any arguments.")
         else if (Storage.runningScripts.isNotEmpty())
             sender.sendMessage("${ChatColor.RED}No scripts can be running to reload config.")
-        CommandScriptExecute.plugin.reloadConfig()
+        ScriptExecutor.plugin.reloadConfig()
         sender.sendMessage("${ChatColor.BLUE}Config reloaded.")
 
         return true
