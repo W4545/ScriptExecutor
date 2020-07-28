@@ -5,11 +5,13 @@ import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 import parts.lost.mc.scriptexecutor.kotlin.ScriptExecutor
 import parts.lost.mc.scriptexecutor.kotlin.config.ConfigManager
 import parts.lost.mc.scriptexecutor.kotlin.config.ScriptConfiguration
 import parts.lost.mc.scriptexecutor.kotlin.coroutines.async
+import parts.lost.mc.scriptexecutor.kotlin.exceptions.ScriptExecutorConfigException
 import parts.lost.mc.scriptexecutor.kotlin.storage.RunningScript
 import parts.lost.mc.scriptexecutor.kotlin.storage.Storage
 import java.io.*
@@ -22,20 +24,27 @@ object Exec: CommandExecutor {
         val script: ScriptConfiguration? = when(args.size) {
             2 -> ConfigManager.getScript(args[0], args[1])
             1 -> {
-                if (sender is Player)
-                    if (ConfigManager.getScriptSchemeConfigurations(args[0]).contains("player"))
-                        ConfigManager.getScript(args[0], "player")
-                    else
-                        ConfigManager.getScript(args[0], "all")
-                else if (ConfigManager.getScriptSchemeConfigurations(args[0]).contains("console"))
+                if (sender is Player && ConfigManager.getScriptSchemeConfigurations(args[0]).contains("player"))
+                    ConfigManager.getScript(args[0], "player")
+                else if (sender is ConsoleCommandSender && ConfigManager.getScriptSchemeConfigurations(args[0]).contains("console"))
                     ConfigManager.getScript(args[0], "console")
                 else
-                    ConfigManager.getScript(args[0], "all")
+                    ConfigManager.getScript(args[0], "default")
             }
-            else -> {
+            0 -> {
                 sender.sendMessage("${ChatColor.RED}This command requires an argument")
                 return true
             }
+            else -> {
+                ConfigManager.getScript(args[0], args[1])
+            }
+        }
+        if (ConfigManager.verbose)
+            sender.sendMessage(script?.verbose ?: "Error script not found")
+
+        val commandArgs: Array<out String> = when(args.size) {
+            1, 2 -> emptyArray()
+            else -> args.copyOfRange(2, args.size)
         }
 
         if (script == null) {
@@ -43,14 +52,14 @@ object Exec: CommandExecutor {
                     "scheme \"${args[1]}\" in config")
         } else {
             val scriptID = Storage.scriptName(script.name)
-            val processBuilder = ProcessBuilder(script.commands)
-            val logFile = if (script.logFile != null) {
+            val processBuilder = ProcessBuilder(script.commands + commandArgs)
+            val logFile = if (script.logFile) {
                 processBuilder.redirectError(processBuilder.redirectInput())
                 processBuilder.redirectErrorStream(true)
                 val formatter = DateTimeFormatter.ofPattern("yy-MM-dd-HH:mm:ss")
                 val formatted = LocalDateTime.now().format(formatter)
-                File(script.logFile).mkdirs()
-                File("${script.logFile}/${formatted}-$scriptID.log")
+                File(script.logFileLocation ?: throw ScriptExecutorConfigException("")).mkdirs()
+                File("${script.logFileLocation}/${formatted}-$scriptID.log")
             } else null
 
             if (script.workingDirectory != null)
@@ -98,11 +107,9 @@ object Exec: CommandExecutor {
 
 
                 val isAlive = GlobalScope.launch(Dispatchers.async) {
-                    delay(5000L)
                     while (process.isAlive)
                         delay(1000L)
-                    if (runningScript.inputJob?.isActive == true)
-                        runningScript.inputJob.cancel()
+                    runningScript.inputJob?.join()
                     sender.sendMessage("${ChatColor.BLUE}[${runningScript.id}] Script execution completed.")
                     val success = Storage.runningScripts.remove(runningScript)
                     if (!success)

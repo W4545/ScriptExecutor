@@ -13,7 +13,7 @@ object Help: CommandExecutor {
                 when (args[0]) {
                     "exec" -> {
                         sender.sendMessage("Description: Executes the provided script")
-                        sender.sendMessage("Usage: /$label exec ${ChatColor.ITALIC}<script>${ChatColor.RESET}")
+                        sender.sendMessage("Usage: /$label exec ${ChatColor.ITALIC}<script>${ChatColor.RESET} <optional context> <optional arguments..>")
                     }
                     "help" -> {
                         sender.sendMessage("Description: Provides help with subcommands")

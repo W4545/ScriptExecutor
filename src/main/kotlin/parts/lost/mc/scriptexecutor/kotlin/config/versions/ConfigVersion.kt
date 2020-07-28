@@ -2,9 +2,11 @@ package parts.lost.mc.scriptexecutor.kotlin.config.versions
 
 import parts.lost.mc.scriptexecutor.kotlin.config.ScriptConfiguration
 
-interface Version {
+interface ConfigVersion {
 
     val configVersion: Int
+
+    val verbose: Boolean
 
     fun getScriptNames(): List<String>
 

@@ -8,6 +8,7 @@ class ScriptExecutor : JavaPlugin() {
 
     override fun onEnable() {
         plugin = this
+        config.options().copyDefaults(false)
         this.saveDefaultConfig()
 
         CommandScriptExecute.initialize()

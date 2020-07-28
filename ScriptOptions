@@ -1,0 +1,7 @@
+ScriptOptions:
+  commands: <Array> # REQUIRED
+  workingDirectory: <String> # Optional
+  wrapOutput: <String> # Optional
+  logFileLocation: <Path> # Optional
+  logFile: <Boolean> # Optional
+  
