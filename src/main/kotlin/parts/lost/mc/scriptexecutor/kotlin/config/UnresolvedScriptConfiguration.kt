@@ -2,6 +2,7 @@ package parts.lost.mc.scriptexecutor.kotlin.config
 
 internal data class UnresolvedScriptConfiguration(
         val name: String,
+        val scheme: String,
         var commands: List<String>? = null,
         var workingDirectory: String? = null,
         var wrapOutput: Boolean = false,
@@ -9,6 +10,6 @@ internal data class UnresolvedScriptConfiguration(
         var logFileLocation: String? = null
 ) {
     fun map(): ScriptConfiguration? {
-        return commands?.let { ScriptConfiguration(name, it, workingDirectory, wrapOutput, logFile, logFileLocation) }
+        return commands?.let { ScriptConfiguration(name, scheme, it, workingDirectory, wrapOutput, logFile, logFileLocation) }
     }
 }

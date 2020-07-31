@@ -39,8 +39,6 @@ object Exec: CommandExecutor {
                 ConfigManager.getScript(args[0], args[1])
             }
         }
-        if (ConfigManager.verbose)
-            sender.sendMessage(script?.verbose ?: "Error script not found")
 
         val commandArgs: Array<out String> = when(args.size) {
             1, 2 -> emptyArray()
@@ -75,6 +73,11 @@ object Exec: CommandExecutor {
                             BufferedReader(InputStreamReader(process.inputStream)).use { bufferedReader ->
                                 if (logFile != null) {
                                     BufferedWriter(FileWriter(logFile)).use {
+                                        if (ConfigManager.verbose) {
+                                            if (script.wrapOutput)
+                                                sender.sendMessage(script.verbose)
+                                            it.appendln(script.verbose)
+                                        }
                                         var line: String? = ""
                                         while (line != null) {
                                             line = bufferedReader.readLine()
@@ -86,6 +89,8 @@ object Exec: CommandExecutor {
                                         }
                                     }
                                 } else {
+                                    if (ConfigManager.verbose)
+                                        sender.sendMessage(script.verbose)
                                     var line: String? = ""
                                     while (line != null) {
                                         line = bufferedReader.readLine()

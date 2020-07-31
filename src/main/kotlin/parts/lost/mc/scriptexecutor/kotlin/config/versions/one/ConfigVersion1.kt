@@ -58,7 +58,7 @@ object ConfigVersion1: ConfigVersion {
     }
 
     override fun getScript(name: String, configurationScheme: String): ScriptConfiguration? {
-        val unresolvedScriptConfiguration = UnresolvedScriptConfiguration(name)
+        val unresolvedScriptConfiguration = UnresolvedScriptConfiguration(name, configurationScheme)
         val config = ScriptExecutor.plugin.config
         loadValues(config.getConfigurationSection("Defaults"), unresolvedScriptConfiguration)
 

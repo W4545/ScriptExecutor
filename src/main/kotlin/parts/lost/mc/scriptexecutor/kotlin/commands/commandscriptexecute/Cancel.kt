@@ -16,7 +16,6 @@ object Cancel: CommandExecutor {
                 if (script == null) {
                     sender.sendMessage("${ChatColor.RED}There is no script running with the provided ID.")
                 } else {
-                    script.inputJob?.cancel()
                     script.process.destroy()
                     sender.sendMessage("Script termination requested.")
                 }
