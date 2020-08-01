@@ -13,7 +13,7 @@ object Help: CommandExecutor {
                 when (args[0]) {
                     "exec" -> {
                         sender.sendMessage("Description: Executes the provided script")
-                        sender.sendMessage("Usage: /$label exec ${ChatColor.ITALIC}<script>${ChatColor.RESET} <optional context> <optional arguments..>")
+                        sender.sendMessage("Usage: /$label exec ${ChatColor.ITALIC}<script>${ChatColor.RESET} <optional configuration> <optional arguments..>")
                     }
                     "help" -> {
                         sender.sendMessage("Description: Provides help with subcommands")
@@ -35,6 +35,11 @@ object Help: CommandExecutor {
                         sender.sendMessage("Description: Requests the provided script to be terminated. " +
                                 "The script will attempt to shutdown properly.")
                         sender.sendMessage("Usage: /$label cancel <script>")
+                    }
+                    "testconfiguration" -> {
+                        sender.sendMessage("Description: Generates a script configuration for the given script " +
+                                "and optional configuration.")
+                        sender.sendMessage("Usage: /$label testconfiguration <script> <optional configuration>")
                     }
                     else -> sender.sendMessage("This is not a valid subcommand. Do /$label help for more info.")
                 }

@@ -46,15 +46,15 @@ object ConfigVersion1: ConfigVersion {
 
     private fun loadValues(configurationSection: ConfigurationSection?, unresolvedScriptConfiguration: UnresolvedScriptConfiguration) {
 
-        configurationSection?.getStringList("commands")?.let {
+        configurationSection?.getStringList("commands")?.also {
             if (it.size != 0)
                 unresolvedScriptConfiguration.commands = it
         }
-        configurationSection?.getString("workingDirectory")?.let { unresolvedScriptConfiguration.workingDirectory = it }
+        configurationSection?.getString("workingDirectory")?.also { unresolvedScriptConfiguration.workingDirectory = it }
 
-        configurationSection?.getString("wrapOutput")?.let { unresolvedScriptConfiguration.wrapOutput = it.toBoolean() }
-        configurationSection?.getString("logFileLocation")?.let { unresolvedScriptConfiguration.logFileLocation = it }
-        configurationSection?.getString("logFile")?.let { unresolvedScriptConfiguration.logFile = it.toBoolean() }
+        configurationSection?.getString("wrapOutput")?.also { unresolvedScriptConfiguration.wrapOutput = it.toBoolean() }
+        configurationSection?.getString("logFileLocation")?.also { unresolvedScriptConfiguration.logFileLocation = it }
+        configurationSection?.getString("logFile")?.also { unresolvedScriptConfiguration.logFile = it.toBoolean() }
     }
 
     override fun getScript(name: String, configurationScheme: String): ScriptConfiguration? {
@@ -63,7 +63,7 @@ object ConfigVersion1: ConfigVersion {
         loadValues(config.getConfigurationSection("Defaults"), unresolvedScriptConfiguration)
 
         val scriptRoot = config.getConfigurationSection("Scripts.$name")
-        scriptRoot?.getStringList("commands")?.let { unresolvedScriptConfiguration.commands = it }
+        scriptRoot?.getStringList("commands")?.also { unresolvedScriptConfiguration.commands = it }
         loadValues(scriptRoot?.getConfigurationSection("default"), unresolvedScriptConfiguration)
         loadValues(scriptRoot?.getConfigurationSection("configurations.$configurationScheme"), unresolvedScriptConfiguration)
 
