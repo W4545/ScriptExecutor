@@ -6,8 +6,6 @@ name: Java CI
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
@@ -24,8 +22,13 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Artifacts
-      uses: actions/upload-artifact@v2
+    - name: Automatic Releases
+      uses: marvinpinto/action-automatic-releases@v1.0.0
       with:
-        name: Latest
-        path: build/libs
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            LICENSE.txt
+            *.jar
