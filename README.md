@@ -1,6 +1,7 @@
 # ScriptExecutor
 
 A Minecraft Spigot Server plugin that adds the ability to execute commands/scripts on the native system. 
+Supported Minecraft versions: **1.12.2-1.16.1**
 
 ### Features
  * Specify commands
@@ -14,8 +15,8 @@ A Minecraft Spigot Server plugin that adds the ability to execute commands/scrip
    * Configuration hierarchy allows easier and quicker setup
 
 ### Coming Soon
- * Automation!
- * More advanced permissions
+- [ ] Automation!
+- [ ] More advanced permissions
  
 ### Technology
 This plugin is 100% written in Kotlin, an up-and-coming language that can compile into Java JVM byte code.
