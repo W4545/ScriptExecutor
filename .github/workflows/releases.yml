@@ -26,7 +26,7 @@ jobs:
       run: ./gradlew build
     - name: Get the version
       id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
     - name: Automatic Releases
       uses: marvinpinto/action-automatic-releases@v1.0.0
       with:
