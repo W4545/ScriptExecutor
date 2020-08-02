@@ -39,3 +39,8 @@ jobs:
         files: |
           LICENSE.txt
           build/libs/*.jar
+    - name: Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Latest
+        path: build/libs
