@@ -33,7 +33,6 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         prerelease: false
         automatic_release_tag: ${{ steps.get_version.outputs.VERSION }}
-        title: "Development Build"
         files: |
           LICENSE.txt
           build/libs/*.jar
