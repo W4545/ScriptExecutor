@@ -7,9 +7,9 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'src/*'
+      - 'src/**'
       - '**.gradle'
-      - 'gradle/*'
+      - 'gradle/**'
       - '.github/workflows/gradle.yml'
 
 jobs:
