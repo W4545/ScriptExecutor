@@ -6,6 +6,11 @@ name: Java CI
 on:
   push:
     branches: [ master ]
+    paths:
+      - 'src/*'
+      - '**.gradle'
+      - 'gradle/*'
+      - '.github/workflows/gradle.yml'
 
 jobs:
   build:
