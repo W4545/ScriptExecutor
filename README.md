@@ -28,6 +28,9 @@ This plugin is 100% written in Kotlin, an up-and-coming language that can compil
 ./gradlew build
 ``` 
 
+### How to Download
+Prebuilt jar files are available on github in the releases section [here](https://github.com/jack4545/ScriptExecutor/releases).
+
 ### How to Install
 
 Place the produced jar file into the plugins folder and run the server.
