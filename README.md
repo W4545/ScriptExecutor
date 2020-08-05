@@ -18,6 +18,7 @@ Supported Minecraft versions: **1.12.2-1.16.1**
 
 ### Coming Soon
 - [ ] Automation!
+- [ ] Wiki
 - [ ] More advanced permissions
  
 ### Technology
