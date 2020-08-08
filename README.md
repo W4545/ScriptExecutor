@@ -30,7 +30,7 @@ Clone the repository and run one of the following commands:
 - Windows: `gradlew.bat build`
 
 ### How to Download
-Prebuilt jar files are available on github in the releases section [here](https://github.com/jack4545/ScriptExecutor/releases).
+Prebuilt jar files are available on github in the releases section [here](https://github.com/w4545/ScriptExecutor/releases).
 
 ### How to Install
 
