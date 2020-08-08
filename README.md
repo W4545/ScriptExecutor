@@ -25,13 +25,14 @@ Supported Minecraft versions: **1.12.2-1.16.1**
 This plugin is 100% written in Kotlin, an up-and-coming language that can compile into Java JVM byte code.
 
 ### How to Build
-```shell script
-./gradlew build
-``` 
+Clone the repository and run one of the following commands: 
+- Linux/Unix: `./gradlew build`
+- Windows: `gradlew.bat build`
 
 ### How to Download
 Prebuilt jar files are available on github in the releases section [here](https://github.com/jack4545/ScriptExecutor/releases).
 
 ### How to Install
 
-Place the produced jar file into the plugins folder and run the server.
+Place the produced jar file into the plugins folder and run the server. This will generate all files - including a config file - 
+into a newly created ScriptExecutor directory found in the plugins folder.
