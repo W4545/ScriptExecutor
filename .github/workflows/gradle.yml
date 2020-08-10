@@ -30,7 +30,7 @@ jobs:
     - name: Renaming
       run: mv ./build/libs/*.jar ./build/libs/ScriptExecutor-latest.jar
     - name: Automatic Releases
-      uses: marvinpinto/action-automatic-releases@v1.0.0
+      uses: marvinpinto/action-automatic-releases@latest
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         automatic_release_tag: "latest"
