@@ -10,11 +10,10 @@ Defaults:
   logFileLocation: ./plugins/ScriptExecutor/logs/
   logFile: true
   wrapOutput: false
-  workingDirectory: .
 
 Scripts:
   hello:
-    commands: [echo, Hello World!]
+    commands: [java, --version]
     default:
       wrapOutput: true
     configurations:
