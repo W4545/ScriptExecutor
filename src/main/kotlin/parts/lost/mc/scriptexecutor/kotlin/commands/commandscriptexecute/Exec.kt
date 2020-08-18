@@ -1,6 +1,5 @@
 package parts.lost.mc.scriptexecutor.kotlin.commands.commandscriptexecute
 
-import kotlinx.coroutines.*
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor

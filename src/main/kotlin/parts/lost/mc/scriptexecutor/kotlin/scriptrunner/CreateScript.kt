@@ -47,7 +47,7 @@ object CreateScript {
                                     if (ConfigManager.verbose) {
                                         if (script.wrapOutput)
                                             sender.sendMessage(script.verbose)
-                                        it.appendln(script.verbose)
+                                        it.appendLine(script.verbose)
                                     }
                                     var line: String? = ""
                                     while (line != null) {
@@ -55,7 +55,7 @@ object CreateScript {
                                         if (line != null) {
                                             if (script.wrapOutput)
                                                 sender.sendMessage("${ChatColor.DARK_GRAY}[${scriptID}] $line")
-                                            it.appendln(line)
+                                            it.appendLine(line)
                                         }
                                     }
                                 }
