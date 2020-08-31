@@ -20,13 +20,19 @@ object Scheduler {
         }
     }
 
+    fun schedule(scriptConfiguration: ScriptConfiguration, delay: Long, period: Long) {
+        schedule(scriptConfiguration) {
+            ScriptExecutor.plugin.server.scheduler.runTaskTimer(ScriptExecutor.plugin, it, delay, period)
+        }
+    }
+
     fun schedule(scriptConfiguration: ScriptConfiguration, delay: Long) {
         schedule(scriptConfiguration) {
             ScriptExecutor.plugin.server.scheduler.runTaskLater(ScriptExecutor.plugin, it, delay)
         }
     }
 
-    private fun schedule(scriptConfiguration: ScriptConfiguration, initializer: (() -> Unit) -> BukkitTask) {
+    private fun schedule(scriptConfiguration: ScriptConfiguration, initializer: (Runnable) -> BukkitTask) {
         val runnable: () -> Unit = {
             CreateScript.create(scriptConfiguration)
         }
@@ -34,5 +40,9 @@ object Scheduler {
         val bukkitTask = initializer(runnable)
 
         Storage.automatedScripts.add(AutomatedScript(scriptConfiguration, bukkitTask))
+
+        ScriptExecutor.plugin.server.scheduler.runTask(ScriptExecutor.plugin, Runnable {
+
+        })
     }
 }

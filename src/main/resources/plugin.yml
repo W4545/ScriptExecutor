@@ -9,3 +9,7 @@ commands:
     description: Executes the provides script
     aliases: se
     permission: scriptexecutor.scriptexecute
+  seautomate:
+    description: Setup an automation for a script
+    aliases: sea
+    permission: scriptexecitor.scriptexecute.automate
