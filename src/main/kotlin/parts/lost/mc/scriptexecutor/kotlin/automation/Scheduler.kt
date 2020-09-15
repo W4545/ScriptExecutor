@@ -45,4 +45,8 @@ object Scheduler {
 
         })
     }
+
+    fun cancel(bukkitTask: BukkitTask) {
+        bukkitTask.cancel()
+    }
 }

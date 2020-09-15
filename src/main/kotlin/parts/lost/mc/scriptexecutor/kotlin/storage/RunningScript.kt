@@ -3,7 +3,14 @@ package parts.lost.mc.scriptexecutor.kotlin.storage
 import kotlinx.coroutines.Job
 import parts.lost.mc.scriptexecutor.kotlin.config.ScriptConfiguration
 
-data class RunningScript(val id: String, val process: Process, val inputJob: Job?, val scriptConfiguration: ScriptConfiguration, var isAliveJob: Job? = null) {
+data class RunningScript(
+    val id: String,
+    val process: Process,
+    val inputJob: Job?,
+    val scriptConfiguration: ScriptConfiguration,
+    var isAliveJob: Job? = null,
+    val automatedScript: AutomatedScript? = null) {
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
