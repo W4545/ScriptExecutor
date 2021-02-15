@@ -1,8 +1,10 @@
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.4.30'
-    id 'com.github.johnrengelman.shadow' version '6.0.0'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
+
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 
 group 'parts.lost.mc'
 version '0.9.4'
@@ -20,12 +22,15 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
+
+task relocateShadowJar(type: ConfigureShadowRelocation) {
+    target = tasks.shadowJar
+    prefix = "scriptexecutor"
+}
+
 shadowJar {
     classifier = ''
-    relocate 'org.jetbrains', 'scriptexecutor.org.jetbrains'
-    relocate 'org.intellij', 'scriptexecutor.org.intellij'
-    relocate 'kotlinx', 'scriptexecutor.kotlinx'
-    relocate 'kotlin', 'scriptexecutor.kotlin'
+    exclude "DebugProbesKt.bin"
 }
 
 processResources {
@@ -40,3 +45,4 @@ compileTestKotlin {
 }
 
 build.dependsOn(shadowJar)
+tasks.shadowJar.dependsOn(tasks.relocateShadowJar)
