@@ -1,6 +1,7 @@
 package parts.lost.mc.scriptexecutor.kotlin
 
 import org.bukkit.plugin.java.JavaPlugin
+import parts.lost.mc.scriptexecutor.kotlin.commands.CommandSEAutomation
 import parts.lost.mc.scriptexecutor.kotlin.commands.CommandScriptExecute
 import java.util.logging.Level
 
@@ -12,6 +13,7 @@ class ScriptExecutor : JavaPlugin() {
         this.saveDefaultConfig()
 
         CommandScriptExecute.initialize()
+        CommandSEAutomation.initialize()
 
         logger.log(Level.INFO, "ScriptExecutor Enabled")
     }

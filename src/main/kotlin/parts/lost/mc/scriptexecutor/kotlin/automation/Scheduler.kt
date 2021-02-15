@@ -46,7 +46,7 @@ object Scheduler {
         })
     }
 
-    fun cancel(bukkitTask: BukkitTask) {
-        bukkitTask.cancel()
+    fun cancel(automatedScript: AutomatedScript) {
+        automatedScript.bukkitTask.cancel()
     }
 }
