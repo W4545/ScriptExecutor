@@ -39,7 +39,7 @@ object Scheduler {
 
         val bukkitTask = initializer(runnable)
 
-        Storage.automatedScripts.add(AutomatedScript(scriptConfiguration, bukkitTask))
+        Storage.automatedScripts.add(AutomatedScript(Storage.automatedScriptID(scriptConfiguration.name), scriptConfiguration, bukkitTask))
 
         ScriptExecutor.plugin.server.scheduler.runTask(ScriptExecutor.plugin, Runnable {
 
