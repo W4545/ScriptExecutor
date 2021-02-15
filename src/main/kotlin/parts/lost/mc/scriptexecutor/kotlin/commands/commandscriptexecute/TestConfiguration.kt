@@ -1,13 +1,24 @@
 package parts.lost.mc.scriptexecutor.kotlin.commands.commandscriptexecute
 
 import org.bukkit.ChatColor
+import org.bukkit.Color
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import parts.lost.mc.scriptexecutor.kotlin.commands.CommandScriptExecute
 import parts.lost.mc.scriptexecutor.kotlin.config.ConfigManager
+import parts.lost.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
+import parts.lost.mc.scriptexecutor.kotlin.interfaces.HelpNotes
+import parts.lost.mc.scriptexecutor.kotlin.interfaces.SubCommand
 
-object TestConfiguration: CommandExecutor {
+object TestConfiguration: SubCommand {
+    override val name = "testconfiguration"
+    override val helpNotes = BasicHelpNotes(
+        this,
+        "<script> ${ChatColor.ITALIC}<optional configuration>${ChatColor.RESET}",
+        "Generates a script configuration for the given script and optional configuration."
+    )
+
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
 
         val script = when (args.size) {
@@ -26,5 +37,18 @@ object TestConfiguration: CommandExecutor {
         sender.sendMessage(script?.verbose ?: "${ChatColor.RED} Unable to find or infer configuration.")
 
         return true
+    }
+
+    override fun onTabComplete(
+        sender: CommandSender,
+        command: Command,
+        alias: String,
+        args: Array<out String>
+    ): MutableList<String> {
+        return when (args.size) {
+            2 -> ConfigManager.getScriptNames().toMutableList()
+            3 -> ConfigManager.getScriptSchemeConfigurations(args[1]).toMutableList()
+            else -> MutableList(0) { "" }
+        }
     }
 }

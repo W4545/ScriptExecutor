@@ -2,11 +2,19 @@ package parts.lost.mc.scriptexecutor.kotlin.commands.commandscriptexecute
 
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import parts.lost.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
+import parts.lost.mc.scriptexecutor.kotlin.interfaces.SubCommand
 import parts.lost.mc.scriptexecutor.kotlin.storage.Storage
 
-object Running: CommandExecutor {
+object Running: SubCommand {
+    override val name = "running"
+    override val helpNotes = BasicHelpNotes(
+        this,
+        "${ChatColor.ITALIC}<optional script>${ChatColor.RESET}",
+    "Lists all running scripts. Optionally provides whether the given script is currently running."
+    )
+
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         when {
             args.isEmpty() -> {
@@ -28,5 +36,17 @@ object Running: CommandExecutor {
         }
 
         return true
+    }
+
+    override fun onTabComplete(
+        sender: CommandSender,
+        command: Command,
+        alias: String,
+        args: Array<out String>
+    ): MutableList<String> {
+        return if (args.size == 2)
+            Storage.runningScripts.map { it.id }.toMutableList()
+        else
+            MutableList(0) { "" }
     }
 }

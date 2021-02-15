@@ -2,11 +2,20 @@ package parts.lost.mc.scriptexecutor.kotlin.commands.commandscriptexecute
 
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import parts.lost.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
+import parts.lost.mc.scriptexecutor.kotlin.interfaces.HelpNotes
+import parts.lost.mc.scriptexecutor.kotlin.interfaces.SubCommand
 import parts.lost.mc.scriptexecutor.kotlin.storage.Storage
 
-object Cancel: CommandExecutor {
+object Cancel: SubCommand {
+    override val name = "cancel"
+    override val helpNotes: HelpNotes = BasicHelpNotes(
+        this,
+        "<script>",
+        "Requests the provided script to be terminated. The script will attempt to shutdown properly."
+    )
+
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
 
         when (args.size) {
@@ -29,5 +38,17 @@ object Cancel: CommandExecutor {
         }
 
         return true
+    }
+
+    override fun onTabComplete(
+        sender: CommandSender,
+        command: Command,
+        alias: String,
+        args: Array<out String>
+    ): MutableList<String> {
+        return if (args.size == 2)
+            Storage.runningScripts.map { it.id }.toMutableList()
+        else
+            MutableList(0) { "" }
     }
 }

@@ -4,7 +4,6 @@ import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import parts.lost.mc.scriptexecutor.kotlin.ScriptExecutor
-import parts.lost.mc.scriptexecutor.kotlin.commands.CommandSEAutomation
 import parts.lost.mc.scriptexecutor.kotlin.interfaces.CommandInitializer
 import parts.lost.mc.scriptexecutor.kotlin.interfaces.SubCommand
 
@@ -21,8 +20,8 @@ abstract class CommandManager : SubCommand, CommandInitializer {
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>)
     : MutableList<String> {
         return when {
-            args.size == 1 -> CommandSEAutomation.subCommands.map { it.name }.toMutableList()
-            args.size > 1 -> CommandSEAutomation.subCommands.find { it.name.startsWith(args[0]) }
+            args.size == 1 -> subCommands.map { it.name }.toMutableList()
+            args.size > 1 -> subCommands.find { it.name == args[0] }
                 ?.onTabComplete(sender, command, alias, args) ?: MutableList(0) { "" }
             else -> MutableList(0) { "" }
         }
