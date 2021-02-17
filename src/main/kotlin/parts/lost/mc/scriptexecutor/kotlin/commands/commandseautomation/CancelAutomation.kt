@@ -3,6 +3,7 @@ package parts.lost.mc.scriptexecutor.kotlin.commands.commandseautomation
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import parts.lost.mc.scriptexecutor.kotlin.automation.Scheduler
 import parts.lost.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
 import parts.lost.mc.scriptexecutor.kotlin.interfaces.SubCommand
 import parts.lost.mc.scriptexecutor.kotlin.storage.Storage
@@ -22,7 +23,7 @@ object CancelAutomation : SubCommand {
             if (script == null) {
                 sender.sendMessage("${ChatColor.RED}There is no script running with the provided ID.")
             } else {
-                script.bukkitTask.cancel()
+                Scheduler.cancel(script)
                 sender.sendMessage("Script termination requested.")
             }
         } else
