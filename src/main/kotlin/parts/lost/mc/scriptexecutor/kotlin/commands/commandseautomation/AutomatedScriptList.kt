@@ -1,11 +1,13 @@
 package parts.lost.mc.scriptexecutor.kotlin.commands.commandseautomation
 
+import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import parts.lost.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
 import parts.lost.mc.scriptexecutor.kotlin.interfaces.SubCommand
+import parts.lost.mc.scriptexecutor.kotlin.storage.Storage
 
-object CommandList : SubCommand {
+object AutomatedScriptList : SubCommand {
     override val name = "list"
     override val helpNotes = BasicHelpNotes(
         this,
@@ -14,7 +16,12 @@ object CommandList : SubCommand {
     )
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        TODO("Not yet implemented")
+        if (args.isNotEmpty())
+            sender.sendMessage("${ChatColor.RED}This command does not take any arguments.")
+        else
+            sender.sendMessage("Automated scripts: ${Storage.automatedScripts.joinToString { it.scriptID }}")
+
+        return true
     }
 
     override fun onTabComplete(

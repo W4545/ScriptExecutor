@@ -3,15 +3,25 @@ package parts.lost.mc.scriptexecutor.kotlin.commands.commandseautomation
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import parts.lost.mc.scriptexecutor.kotlin.automation.Scheduler
 import parts.lost.mc.scriptexecutor.kotlin.config.ConfigManager
 import parts.lost.mc.scriptexecutor.kotlin.endsWith
 import parts.lost.mc.scriptexecutor.kotlin.interfaces.HelpNotes
 import parts.lost.mc.scriptexecutor.kotlin.interfaces.SubCommand
+import java.lang.RuntimeException
+
+private fun parseTimeLength(length: String): Long = when {
+    length.endsWith('s') -> length.trim { !it.isDigit() }.toLong() * 20
+    length.endsWith('m') -> length.trim { !it.isDigit() }.toLong() * 120
+    length.endsWith('h') -> length.trim { !it.isDigit() }.toLong() * 72000
+    length.endsWith('d') -> length.trim { !it.isDigit() }.toLong() * 1728000
+    else -> throw RuntimeException("An unknown error occurred parsing delay")
+}
 
 object Create: SubCommand {
     private val digits = arrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')
 
-    private val dateRegex = """\d{4}-\d{1,2}-\d{1,2}""".toRegex()
+    private val dateRegex = """(\d{4})-(\d{1,2})-(\d{1,2})""".toRegex()
     private val timeRegex = """\d{1,2}:\d{2}""".toRegex()
     private val timeLengthRegex = """\d+[smhd]""".toRegex()
 
@@ -39,9 +49,12 @@ object Create: SubCommand {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         val scriptConfiguration = ConfigManager.getScript(args[0], args[1])
 
-        sender.sendMessage(scriptConfiguration?.verbose ?: "${ChatColor.RED} Unable to find or infer configuration.")
+        if (scriptConfiguration == null) {
+            sender.sendMessage("${ChatColor.RED} Unable to find or infer script/configuration.")
+            return true
+        }
 
-        val date = dateRegex.matchEntire(args[2])?.value
+        val date = dateRegex.matchEntire(args[2])
         val delay = timeLengthRegex.matchEntire(args[2])?.value
         val time = timeRegex.matchEntire(args[3])?.value
         val period = if (time == null)
@@ -50,9 +63,26 @@ object Create: SubCommand {
             timeLengthRegex.matchEntire(args[4])?.value
 
         if (date != null && time != null) {
-            sender.sendMessage("")
+            sender.sendMessage(scriptConfiguration.verbose)
+            sender.sendMessage("Date: $date Time: $time")
+            if (period != null) {
+                sender.sendMessage("Interval: $period")
+            } else {
+                TODO("not yet implemented")
+            }
         } else if (delay != null) {
-            //TODO
+            sender.sendMessage(scriptConfiguration.verbose)
+            sender.sendMessage("Delay: $delay")
+            val rawDelay = parseTimeLength(delay)
+
+            val automatedScript = if (period != null) {
+                sender.sendMessage("Interval: $period")
+                val rawPeriod = parseTimeLength(period)
+
+                Scheduler.schedule(scriptConfiguration, rawDelay, rawPeriod)
+            } else
+                Scheduler.schedule(scriptConfiguration, rawDelay)
+            sender.sendMessage("${ChatColor.GREEN}A automated script was created with ID \"${automatedScript.scriptID}\"")
         } else
             sender.sendMessage("${ChatColor.RED}Unknown arguments provided. " +
                     "See ${ChatColor.DARK_RED}/$label help create${ChatColor.RESET}${ChatColor.RED} for details")
