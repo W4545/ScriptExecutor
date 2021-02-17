@@ -10,40 +10,36 @@ import java.util.*
 
 object Scheduler {
 
-    fun schedule(scriptConfiguration: ScriptConfiguration, date: Date) {
+    fun schedule(scriptConfiguration: ScriptConfiguration, date: Date) : AutomatedScript {
         val time: Long = System.currentTimeMillis() - date.time
 
-        if (time < 0) {
+        return if (time < 0)
             schedule(scriptConfiguration, 0L)
-        } else {
+        else
             schedule(scriptConfiguration, time / 1000 * 20)
-        }
     }
 
-    fun schedule(scriptConfiguration: ScriptConfiguration, delay: Long, period: Long) {
-        schedule(scriptConfiguration) {
-            ScriptExecutor.plugin.server.scheduler.runTaskTimer(ScriptExecutor.plugin, it, delay, period)
-        }
+    fun schedule(scriptConfiguration: ScriptConfiguration, delay: Long, period: Long)
+    : AutomatedScript = schedule(scriptConfiguration) {
+        ScriptExecutor.plugin.server.scheduler.runTaskTimer(ScriptExecutor.plugin, it, delay, period)
     }
 
-    fun schedule(scriptConfiguration: ScriptConfiguration, delay: Long) {
-        schedule(scriptConfiguration) {
-            ScriptExecutor.plugin.server.scheduler.runTaskLater(ScriptExecutor.plugin, it, delay)
-        }
+    fun schedule(scriptConfiguration: ScriptConfiguration, delay: Long) : AutomatedScript = schedule(scriptConfiguration) {
+        ScriptExecutor.plugin.server.scheduler.runTaskLater(ScriptExecutor.plugin, it, delay)
     }
 
-    private fun schedule(scriptConfiguration: ScriptConfiguration, initializer: (Runnable) -> BukkitTask) {
+    private fun schedule(scriptConfiguration: ScriptConfiguration, initializer: (Runnable) -> BukkitTask) : AutomatedScript {
         val runnable: () -> Unit = {
             CreateScript.create(scriptConfiguration)
         }
 
         val bukkitTask = initializer(runnable)
 
-        Storage.automatedScripts.add(AutomatedScript(Storage.automatedScriptID(scriptConfiguration.name), scriptConfiguration, bukkitTask))
+        val automatedScript = AutomatedScript(Storage.automatedScriptID(scriptConfiguration.name), scriptConfiguration, bukkitTask)
 
-        ScriptExecutor.plugin.server.scheduler.runTask(ScriptExecutor.plugin, Runnable {
+        Storage.automatedScripts.add(automatedScript)
 
-        })
+        return automatedScript
     }
 
     fun cancel(automatedScript: AutomatedScript) {
