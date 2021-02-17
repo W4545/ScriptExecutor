@@ -11,6 +11,7 @@ class ScriptExecutor : JavaPlugin() {
         plugin = this
         config.options().copyDefaults(false)
         this.saveDefaultConfig()
+        reloadConfig()
 
         CommandScriptExecute.initialize()
         CommandSEAutomation.initialize()
