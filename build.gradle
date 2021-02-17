@@ -44,5 +44,5 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-build.dependsOn(shadowJar)
+tasks.build.dependsOn(shadowJar)
 tasks.shadowJar.dependsOn(tasks.relocateShadowJar)
