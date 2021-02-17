@@ -6,6 +6,8 @@ interface ConfigVersion {
 
     val configVersion: Int
 
+    val timeZoneOverride: String?
+
     val verbose: Boolean
 
     fun getScriptNames(): List<String>

@@ -15,6 +15,9 @@ object ConfigVersion1: ConfigVersion {
     override val verbose: Boolean
         get() = ScriptExecutor.plugin.config.getBoolean("verbose")
 
+    override val timeZoneOverride: String?
+        get() = ScriptExecutor.plugin.config.getString("timezone")
+
     override fun getScriptNames(): List<String> {
         return ScriptExecutor.plugin.config.getConfigurationSection("Scripts")?.getKeys(false)?.toMutableList()
                 ?: Collections.emptyList()

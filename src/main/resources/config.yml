@@ -4,6 +4,11 @@ version: 1
 
 verbose: false
 
+# Uncomment below to override the default time zone used when interpreting dates and times
+# Useful when java fails to find the default time zone.
+# See offsets for various timezones at https://greenwichmeantime.com/time-zone/definition/
+# timezone: GMT-5
+
 # Provides default values to all script configurations defined in the config file.
 # These can be overridden in the script configuration.
 Defaults:
