@@ -19,7 +19,9 @@ import java.time.format.DateTimeFormatter
 import java.util.logging.Level
 
 object CreateScript {
-    fun create(script: ScriptConfiguration, commandArgs: Array<out String> = emptyArray(), sender: CommandSender = ScriptExecutor.plugin.server.consoleSender): String {
+    fun create(script: ScriptConfiguration,
+               commandArgs: Array<out String> = emptyArray(),
+               sender: CommandSender = ScriptExecutor.plugin.server.consoleSender): String {
         val scriptID = Storage.scriptName(script.name)
         val processBuilder = ProcessBuilder(script.commands + commandArgs)
         val logFile = if (script.logFile) {
@@ -87,7 +89,13 @@ object CreateScript {
                     delay(1000L)
                 runningScript.inputJob?.join()
                 sender.sendMessage("${ChatColor.BLUE}[${runningScript.id}] Script execution completed.")
-                val success = Storage.runningScripts.remove(runningScript)
+                var success = Storage.runningScripts.remove(runningScript)
+
+                if (script.additionalConfigurations["automated"] == "true" &&
+                    script.additionalConfigurations["automateDelete"] == "true") {
+                    success = success && Storage.automatedScripts.removeIf { it.scriptID == script.additionalConfigurations["automatedScriptID"] }
+                }
+
                 if (!success)
                     sender.sendMessage("${ChatColor.RED}Failed to remove running script from plugin storage.")
             }

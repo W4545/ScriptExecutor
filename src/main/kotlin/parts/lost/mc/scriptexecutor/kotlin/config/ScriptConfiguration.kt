@@ -7,7 +7,8 @@ data class ScriptConfiguration(
         val workingDirectory: String?,
         val wrapOutput: Boolean,
         val logFile: Boolean,
-        val logFileLocation: String?
+        val logFileLocation: String?,
+        val additionalConfigurations: MutableMap<String, String> = mutableMapOf()
 ) {
     val verbose: String
     get() = "Name: $name\n" +
