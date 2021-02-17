@@ -8,7 +8,7 @@ import parts.lost.mc.scriptexecutor.kotlin.interfaces.HelpNotes
 import parts.lost.mc.scriptexecutor.kotlin.interfaces.SubCommand
 import parts.lost.mc.scriptexecutor.kotlin.storage.Storage
 
-object Cancel: SubCommand {
+object CancelScript: SubCommand {
     override val name = "cancel"
     override val helpNotes: HelpNotes = BasicHelpNotes(
         this,
