@@ -18,8 +18,12 @@ object AutomatedScriptList : SubCommand {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (args.isNotEmpty())
             sender.sendMessage("${ChatColor.RED}This command does not take any arguments.")
-        else
-            sender.sendMessage("Automated scripts: ${Storage.automatedScripts.joinToString { it.scriptID }}")
+        else {
+            if (Storage.automatedScripts.size == 0)
+                sender.sendMessage("There are currently no automated scripts")
+            else
+                sender.sendMessage("Automated scripts: ${Storage.automatedScripts.joinToString { it.scriptID }}")
+        }
 
         return true
     }
@@ -29,7 +33,5 @@ object AutomatedScriptList : SubCommand {
         command: Command,
         alias: String,
         args: Array<out String>
-    ): MutableList<String> {
-        TODO("Not yet implemented")
-    }
+    ) : MutableList<String> = MutableList(0) { "" }
 }
