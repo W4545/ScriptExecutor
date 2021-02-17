@@ -12,7 +12,7 @@ object CommandScriptExecute : CommandManager() {
 
     override val name = "scriptexecute"
     override val helpNotes = HelpCommand(this)
-    override val subCommands = listOf(Exec, helpNotes, CancelScript, Reload, Running, SubCommandList, TestConfiguration)
+    override val subCommands = listOf(Exec, helpNotes, CancelScript, Reload, Running, ScriptList, TestConfiguration)
 
 
     fun infer(sender: CommandSender, args: Array<out String>): String {

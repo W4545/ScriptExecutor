@@ -7,7 +7,7 @@ import parts.lost.mc.scriptexecutor.kotlin.config.ConfigManager
 import parts.lost.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
 import parts.lost.mc.scriptexecutor.kotlin.interfaces.SubCommand
 
-object SubCommandList: SubCommand {
+object ScriptList: SubCommand {
     override val name = "list"
     override val helpNotes = BasicHelpNotes(
         this,
