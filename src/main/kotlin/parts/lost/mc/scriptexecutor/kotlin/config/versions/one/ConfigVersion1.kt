@@ -47,7 +47,7 @@ object ConfigVersion1: ConfigVersion {
         }
     }
 
-    private fun loadValues(configurationSection: ConfigurationSection?, unresolvedScriptConfiguration: UnresolvedScriptConfiguration) {
+    internal fun loadValues(configurationSection: ConfigurationSection?, unresolvedScriptConfiguration: UnresolvedScriptConfiguration) {
 
         configurationSection?.getStringList("commands")?.also {
             if (it.size != 0)

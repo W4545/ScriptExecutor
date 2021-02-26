@@ -4,27 +4,15 @@ import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import parts.lost.mc.scriptexecutor.kotlin.automation.Parser
 import parts.lost.mc.scriptexecutor.kotlin.automation.Scheduler
 import parts.lost.mc.scriptexecutor.kotlin.config.ConfigManager
-import java.lang.RuntimeException
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
 
 object CreateCommandExecutor : CommandExecutor {
-
-    private fun parseTimeLength(length: String): Long = when {
-        length.endsWith('s') -> length.trim { !it.isDigit() }.toLong() * 20
-        length.endsWith('m') -> length.trim { !it.isDigit() }.toLong() * 1200
-        length.endsWith('h') -> length.trim { !it.isDigit() }.toLong() * 72000
-        length.endsWith('d') -> length.trim { !it.isDigit() }.toLong() * 1728000
-        else -> throw RuntimeException("An unknown error occurred parsing delay")
-    }
-
-    private val dateRegex = """(\d{4})-(\d{1,2})-(\d{1,2})""".toRegex()
-    private val timeRegex = """(\d{1,2}):(\d{2})""".toRegex()
-    private val timeLengthRegex = """\d+[smhd]""".toRegex()
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (args.size < 3 || args.size > 5) {
@@ -38,15 +26,15 @@ object CreateCommandExecutor : CommandExecutor {
             return true
         }
 
-        val date = dateRegex.matchEntire(args[2])?.groupValues
-        val delay = timeLengthRegex.matchEntire(args[2])?.value
+        val date = Parser.dateRegex.matchEntire(args[2])?.groupValues
+        val delay = Parser.timeLengthRegex.matchEntire(args[2])?.value
         val time = if (delay == null)
-            timeRegex.matchEntire(args[3])?.groupValues
+            Parser.timeRegex.matchEntire(args[3])?.groupValues
         else
             null
         val period = when {
-            time == null && args.size == 4 -> timeLengthRegex.matchEntire(args[3])?.value
-            args.size == 5 -> timeLengthRegex.matchEntire(args[4])?.value
+            time == null && args.size == 4 -> Parser.timeLengthRegex.matchEntire(args[3])?.value
+            args.size == 5 -> Parser.timeLengthRegex.matchEntire(args[4])?.value
             else -> null
         }
 
@@ -76,7 +64,7 @@ object CreateCommandExecutor : CommandExecutor {
             val automatedScript = if (period != null) {
                 sender.sendMessage("Interval: $period")
 
-                val rawPeriod = parseTimeLength(period)
+                val rawPeriod = Parser.parseTimeLength(period)
                 Scheduler.schedule(scriptConfiguration, rawTime, rawPeriod)
             } else {
                 Scheduler.schedule(scriptConfiguration, rawTime)
@@ -86,11 +74,11 @@ object CreateCommandExecutor : CommandExecutor {
         } else if (delay != null) {
             sender.sendMessage(scriptConfiguration.verbose)
             sender.sendMessage("Delay: $delay")
-            val rawDelay = parseTimeLength(delay)
+            val rawDelay = Parser.parseTimeLength(delay)
 
             val automatedScript = if (period != null) {
                 sender.sendMessage("Interval: $period")
-                val rawPeriod = parseTimeLength(period)
+                val rawPeriod = Parser.parseTimeLength(period)
 
                 Scheduler.schedule(scriptConfiguration, rawDelay, rawPeriod)
             } else
