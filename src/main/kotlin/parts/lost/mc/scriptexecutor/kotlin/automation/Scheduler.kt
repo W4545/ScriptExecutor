@@ -2,6 +2,7 @@ package parts.lost.mc.scriptexecutor.kotlin.automation
 
 import org.bukkit.scheduler.BukkitTask
 import parts.lost.mc.scriptexecutor.kotlin.ScriptExecutor
+import parts.lost.mc.scriptexecutor.kotlin.automation.config.AutomationConfigManager
 import parts.lost.mc.scriptexecutor.kotlin.config.ScriptConfiguration
 import parts.lost.mc.scriptexecutor.kotlin.exceptions.ScriptCancelException
 import parts.lost.mc.scriptexecutor.kotlin.scriptrunner.CreateScript
@@ -53,6 +54,7 @@ object Scheduler {
         }
 
         automatedScript.bukkitTask = bukkitTask
+        AutomationConfigManager.writeScript(automatedScript)
 
         return automatedScript
     }

@@ -60,10 +60,12 @@ object CreateCommandExecutor : CommandExecutor {
                 time[2].toInt()
             ).atZone(zoneID).toInstant())
 
+            scriptConfiguration.additionalConfigurations["automatedDate"] = rawTime.time.toString()
+
             sender.sendMessage(rawTime.toString())
             val automatedScript = if (period != null) {
                 sender.sendMessage("Interval: $period")
-
+                scriptConfiguration.additionalConfigurations["automatedPeriod"] = period
                 val rawPeriod = Parser.parseTimeLength(period)
                 Scheduler.schedule(scriptConfiguration, rawTime, rawPeriod)
             } else {
@@ -75,11 +77,11 @@ object CreateCommandExecutor : CommandExecutor {
             sender.sendMessage(scriptConfiguration.verbose)
             sender.sendMessage("Delay: $delay")
             val rawDelay = Parser.parseTimeLength(delay)
-
+            scriptConfiguration.additionalConfigurations["automatedDelay"] = delay
             val automatedScript = if (period != null) {
                 sender.sendMessage("Interval: $period")
                 val rawPeriod = Parser.parseTimeLength(period)
-
+                scriptConfiguration.additionalConfigurations["automatedPeriod"] = period
                 Scheduler.schedule(scriptConfiguration, rawDelay, rawPeriod)
             } else
                 Scheduler.schedule(scriptConfiguration, rawDelay)

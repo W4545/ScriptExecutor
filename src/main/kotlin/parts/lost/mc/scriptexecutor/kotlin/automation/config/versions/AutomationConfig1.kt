@@ -8,6 +8,10 @@ import parts.lost.mc.scriptexecutor.kotlin.config.versions.one.ConfigVersion1
 import parts.lost.mc.scriptexecutor.kotlin.exceptions.ScriptExecutorConfigException
 import parts.lost.mc.scriptexecutor.kotlin.storage.AutomatedScript
 import java.lang.RuntimeException
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.logging.Level
 
 
 object AutomationConfig1 : AutomationConfig {
@@ -33,10 +37,17 @@ object AutomationConfig1 : AutomationConfig {
 
         val deleteOnComplete = fileSection.getBoolean("deleteOnComplete")
 
-        val date = fileSection.getString("date")?.let { rawDate ->
-            fileSection.getString("time")?.let { rawTime ->
-                Parser.parseDateTime(rawDate, rawTime)
-            }
+//        val date = fileSection.getString("date")?.let { rawDate ->
+//            fileSection.getString("time")?.let { rawTime ->
+//                Parser.parseDateTime(rawDate, rawTime)
+//            }
+//        }
+
+        val date = fileSection.getString("date")?.let {
+            if (it.all { char -> char.isDigit() })
+                Date(it.toLong())
+            else
+                throw RuntimeException("Error parsing date")
         }
 
         val delay = fileSection.getString("delay")?.let {
@@ -53,6 +64,31 @@ object AutomationConfig1 : AutomationConfig {
             delay != null -> Scheduler.schedule(configuration, delay, period)
             else -> throw RuntimeException("Error Parsing automation")
         }
+    }
+
+    override fun writeScript(automatedScript: AutomatedScript) {
+        val automatedSection = ScriptExecutor.plugin.automationConfig.getConfigurationSection("automatedScripts")?.createSection(automatedScript.scriptID) ?: ScriptExecutor.plugin.automationConfig.createSection("automatedScripts").createSection(automatedScript.scriptID)
+
+        automatedScript.scriptConfiguration.additionalConfigurations["automatedDate"]?.let {
+            automatedSection.set("date", it)
+        }
+
+        automatedScript.scriptConfiguration.additionalConfigurations["automatedDelay"]?.let {
+            automatedSection.set("delay", it)
+        }
+
+        automatedScript.scriptConfiguration.additionalConfigurations["automatedPeriod"]?.let {
+            automatedSection.set("period", it)
+        }
+
+        val configuration = automatedSection.createSection("configuration")
+        configuration.set("commands", automatedScript.scriptConfiguration.commands)
+        configuration.set("workingDirectory", automatedScript.scriptConfiguration.workingDirectory)
+        configuration.set("wrapOutput", automatedScript.scriptConfiguration.wrapOutput)
+        configuration.set("logFile", automatedScript.scriptConfiguration.logFile)
+        configuration.set("logFileLocation", automatedScript.scriptConfiguration.logFileLocation)
+
+        ScriptExecutor.plugin.automationConfig.save(ScriptExecutor.plugin.automationFile)
     }
 
 

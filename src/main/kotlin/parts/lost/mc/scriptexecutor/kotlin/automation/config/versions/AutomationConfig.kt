@@ -10,4 +10,6 @@ interface AutomationConfig {
     val automatedScriptNames : List<String>
 
     fun loadScript(string: String) : AutomatedScript
+
+    fun writeScript(automatedScript: AutomatedScript)
 }
