@@ -1,13 +1,13 @@
 package parts.lost.mc.scriptexecutor.kotlin.automation
 
-import org.bukkit.configuration.file.FileConfiguration
+import org.bukkit.configuration.ConfigurationSection
 import parts.lost.mc.scriptexecutor.kotlin.config.ConfigManager
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 
-data class Timing(val delay: Long = 0L, val period: Long = 0L, val date: Date? = null)
+data class Timing(val delay: String? = null, val period: String? = null, val date: Date? = null)
 
 object Timings {
 
@@ -20,23 +20,23 @@ object Timings {
             TimeZone.getTimeZone(ConfigManager.timeZoneOverride)
     }
 
-    fun factory(file: FileConfiguration): Timing {
+    fun factory(file: ConfigurationSection): Timing {
         return if (file.contains("date"))  {
             val rawDate = file.getString("date")
-            val period = file.getLong("period")
+            val period = file.getString("period")
 
             val date = dateFormatter.parse(rawDate)
 
             Timing(period = period, date = date)
         } else {
-            val delay = file.getLong("delay")
-            val period = file.getLong("period")
+            val delay = file.getString("delay")
+            val period = file.getString("period")
 
             Timing(delay, period)
         }
     }
 
-    fun write(file: FileConfiguration, timing: Timing) {
+    fun write(file: ConfigurationSection, timing: Timing) {
         if (timing.date == null)
             file["delay"] = timing.delay.toString()
         else

@@ -8,7 +8,7 @@ data class ScriptConfiguration(
         val wrapOutput: Boolean,
         val logFile: Boolean,
         val logFileLocation: String?,
-        val additionalConfigurations: MutableMap<String, String> = mutableMapOf()
+        val additionalConfigurations: MutableMap<String, Any> = mutableMapOf()
 ) {
     val verbose: String
     get() = "Name: $name\n" +
@@ -17,5 +17,7 @@ data class ScriptConfiguration(
             "  Working Directory: $workingDirectory\n" +
             "  Wrap Output: $wrapOutput\n" +
             "  Generate Log File: $logFile\n" +
-            "  Log File Location: $logFileLocation"
+            "  Log File Location: $logFileLocation\n" +
+            "  Additional Configurations: \n" +
+            additionalConfigurations.map { "${it.key}: ${it.value}" }.joinToString("\n    ", "    ")
 }

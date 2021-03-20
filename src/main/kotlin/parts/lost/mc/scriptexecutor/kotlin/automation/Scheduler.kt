@@ -41,9 +41,17 @@ object Scheduler {
     }
 
     private fun schedule(scriptConfiguration: ScriptConfiguration, deleteOnCompletion: Boolean, initializer: (Runnable) -> BukkitTask) : AutomatedScript {
-        val scriptID = Storage.automatedScriptID(scriptConfiguration.name)
+        val scriptID = if (scriptConfiguration.additionalConfigurations["automatedScriptID"] !is String) {
+            val id = Storage.automatedScriptID(scriptConfiguration.name)
+            scriptConfiguration.additionalConfigurations["automatedScriptID"] = id
+            id
+        } else {
+            scriptConfiguration.additionalConfigurations["configGenerated"] = true
+            scriptConfiguration.additionalConfigurations["automatedScriptID"] as String
+        }
+
         scriptConfiguration.additionalConfigurations["automated"] = "true"
-        scriptConfiguration.additionalConfigurations["automatedScriptID"] = scriptID
+
         scriptConfiguration.additionalConfigurations["automateDelete"] = deleteOnCompletion.toString()
 
         val automatedScript = AutomatedScript(scriptID, scriptConfiguration, null, deleteOnCompletion)

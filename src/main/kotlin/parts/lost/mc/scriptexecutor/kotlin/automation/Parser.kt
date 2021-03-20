@@ -13,7 +13,8 @@ object Parser {
     val timeRegex = """(\d{1,2}):(\d{2})""".toRegex()
     val timeLengthRegex = """\d+[smhd]""".toRegex()
 
-    fun parseTimeLength(length: String): Long = when {
+    fun parseTimeLength(length: String?): Long = when {
+        length == null -> 0L
         length.endsWith('s') -> length.trim { !it.isDigit() }.toLong() * 20
         length.endsWith('m') -> length.trim { !it.isDigit() }.toLong() * 1200
         length.endsWith('h') -> length.trim { !it.isDigit() }.toLong() * 72000

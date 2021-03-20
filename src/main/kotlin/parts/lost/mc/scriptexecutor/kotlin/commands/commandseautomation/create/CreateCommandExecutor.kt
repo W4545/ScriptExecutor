@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import parts.lost.mc.scriptexecutor.kotlin.automation.Parser
 import parts.lost.mc.scriptexecutor.kotlin.automation.Scheduler
+import parts.lost.mc.scriptexecutor.kotlin.automation.Timing
 import parts.lost.mc.scriptexecutor.kotlin.config.ConfigManager
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -60,15 +61,14 @@ object CreateCommandExecutor : CommandExecutor {
                 time[2].toInt()
             ).atZone(zoneID).toInstant())
 
-            scriptConfiguration.additionalConfigurations["automatedDate"] = rawTime.time.toString()
-
             sender.sendMessage(rawTime.toString())
             val automatedScript = if (period != null) {
                 sender.sendMessage("Interval: $period")
-                scriptConfiguration.additionalConfigurations["automatedPeriod"] = period
+                scriptConfiguration.additionalConfigurations["timing"] = Timing(date = rawTime, period = period.toString())
                 val rawPeriod = Parser.parseTimeLength(period)
                 Scheduler.schedule(scriptConfiguration, rawTime, rawPeriod)
             } else {
+                scriptConfiguration.additionalConfigurations["timing"] = Timing(date = rawTime)
                 Scheduler.schedule(scriptConfiguration, rawTime)
             }
 
@@ -81,10 +81,12 @@ object CreateCommandExecutor : CommandExecutor {
             val automatedScript = if (period != null) {
                 sender.sendMessage("Interval: $period")
                 val rawPeriod = Parser.parseTimeLength(period)
-                scriptConfiguration.additionalConfigurations["automatedPeriod"] = period
+                scriptConfiguration.additionalConfigurations["timing"] = Timing(delay, period)
                 Scheduler.schedule(scriptConfiguration, rawDelay, rawPeriod)
-            } else
+            } else {
+                scriptConfiguration.additionalConfigurations["timing"] = Timing(delay)
                 Scheduler.schedule(scriptConfiguration, rawDelay)
+            }
             sender.sendMessage("${ChatColor.GREEN}A automated script was created with ID \"${automatedScript.scriptID}\"")
         } else
             sender.sendMessage("${ChatColor.RED}Unknown arguments provided. " +
