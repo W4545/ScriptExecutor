@@ -12,4 +12,6 @@ interface AutomationConfig {
     fun loadScript(string: String) : AutomatedScript
 
     fun writeScript(automatedScript: AutomatedScript)
+
+    fun deleteScript(string: String)
 }

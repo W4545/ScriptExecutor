@@ -10,6 +10,7 @@ import parts.lost.mc.scriptexecutor.kotlin.storage.AutomatedScript
 import parts.lost.mc.scriptexecutor.kotlin.storage.Storage
 import java.time.Instant
 import java.util.*
+import java.util.logging.Level
 
 object Scheduler {
 
@@ -24,7 +25,7 @@ object Scheduler {
 
     fun schedule(scriptConfiguration: ScriptConfiguration, date: Date, interval: Long) : AutomatedScript {
         val time: Long = date.time - Date.from(Instant.now()).time
-
+        ScriptExecutor.plugin.logger.log(Level.INFO, (time / 1000).toString())
         return if (time < 0)
             schedule(scriptConfiguration, 0L, interval)
         else
@@ -59,6 +60,8 @@ object Scheduler {
 
         val bukkitTask = initializer {
             CreateScript.create(scriptConfiguration)
+            if (automatedScript.deleteOnCompletion)
+                cancel(automatedScript)
         }
 
         automatedScript.bukkitTask = bukkitTask
@@ -70,5 +73,6 @@ object Scheduler {
     fun cancel(automatedScript: AutomatedScript) {
         automatedScript.bukkitTask?.cancel() ?: throw ScriptCancelException()
         Storage.automatedScripts.remove(automatedScript)
+        AutomationConfigManager.deleteScript(automatedScript.scriptID)
     }
 }

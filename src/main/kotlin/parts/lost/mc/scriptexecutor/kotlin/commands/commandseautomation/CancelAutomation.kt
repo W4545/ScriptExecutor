@@ -4,6 +4,7 @@ import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import parts.lost.mc.scriptexecutor.kotlin.automation.Scheduler
+import parts.lost.mc.scriptexecutor.kotlin.automation.config.AutomationConfigManager
 import parts.lost.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
 import parts.lost.mc.scriptexecutor.kotlin.interfaces.SubCommand
 import parts.lost.mc.scriptexecutor.kotlin.storage.Storage

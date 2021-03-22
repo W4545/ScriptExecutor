@@ -62,5 +62,8 @@ object AutomationConfig1 : AutomationConfig {
         ScriptExecutor.plugin.automationConfig.save(ScriptExecutor.plugin.automationFile)
     }
 
-
+    override fun deleteScript(string: String) {
+        ScriptExecutor.plugin.automationConfig.set("automatedScripts.$string", null)
+        ScriptExecutor.plugin.automationConfig.save(ScriptExecutor.plugin.automationFile)
+    }
 }
