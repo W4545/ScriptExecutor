@@ -39,9 +39,16 @@ object AutomationConfig1 : AutomationConfig {
         configuration.additionalConfigurations["timing"] = timing
         configuration.additionalConfigurations["automatedScriptID"] = string
 
-        return when {
-            timing.date != null -> Scheduler.schedule(configuration, timing.date, Parser.parseTimeLength(timing.period))
-            else -> Scheduler.schedule(configuration, Parser.parseTimeLength(timing.delay), Parser.parseTimeLength(timing.period))
+        return if (timing.period == null) {
+            if (timing.date == null)
+                Scheduler.schedule(configuration, Parser.parseTimeLength(timing.delay))
+            else
+                Scheduler.schedule(configuration, timing.date)
+        } else {
+            if (timing.date == null)
+                Scheduler.schedule(configuration, Parser.parseTimeLength(timing.delay), Parser.parseTimeLength(timing.period))
+            else
+                Scheduler.schedule(configuration, timing.date, Parser.parseTimeLength(timing.period))
         }
     }
 

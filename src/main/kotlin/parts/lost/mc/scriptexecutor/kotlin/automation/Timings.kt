@@ -42,6 +42,7 @@ object Timings {
         else
             file["date"] = dateFormatter.format(timing.date)
 
-        file["period"] = timing.period ?: "0s"
+        if (timing.period != null)
+            file["period"] = timing.period
     }
 }

@@ -89,12 +89,7 @@ object CreateScript {
                     delay(1000L)
                 runningScript.inputJob?.join()
                 sender.sendMessage("${ChatColor.BLUE}[${runningScript.id}] Script execution completed.")
-                var success = Storage.runningScripts.remove(runningScript)
-
-                if (script.additionalConfigurations["automated"] == "true" &&
-                    script.additionalConfigurations["automateDelete"] == "true") {
-                    success = success && Storage.automatedScripts.removeIf { it.scriptID == script.additionalConfigurations["automatedScriptID"] }
-                }
+                val success = Storage.runningScripts.remove(runningScript)
 
                 if (!success)
                     sender.sendMessage("${ChatColor.RED}Failed to remove running script from plugin storage.")

@@ -11,6 +11,7 @@ import parts.lost.mc.scriptexecutor.kotlin.storage.Storage
 import java.time.Instant
 import java.util.*
 import java.util.logging.Level
+import java.util.logging.Logger
 
 object Scheduler {
 
@@ -34,7 +35,10 @@ object Scheduler {
 
     fun schedule(scriptConfiguration: ScriptConfiguration, delay: Long, period: Long)
     : AutomatedScript = schedule(scriptConfiguration, false) {
-        ScriptExecutor.plugin.server.scheduler.runTaskTimer(ScriptExecutor.plugin, it, delay, period)
+        if (period <= 0L)
+            ScriptExecutor.plugin.server.scheduler.runTaskLater(ScriptExecutor.plugin, it, delay)
+        else
+            ScriptExecutor.plugin.server.scheduler.runTaskTimer(ScriptExecutor.plugin, it, delay, period)
     }
 
     fun schedule(scriptConfiguration: ScriptConfiguration, delay: Long) : AutomatedScript = schedule(scriptConfiguration, true) {
@@ -61,7 +65,7 @@ object Scheduler {
         val bukkitTask = initializer {
             CreateScript.create(scriptConfiguration)
             if (automatedScript.deleteOnCompletion)
-                cancel(automatedScript)
+                cancel(automatedScript, false)
         }
 
         automatedScript.bukkitTask = bukkitTask
@@ -70,9 +74,12 @@ object Scheduler {
         return automatedScript
     }
 
-    fun cancel(automatedScript: AutomatedScript) {
-        automatedScript.bukkitTask?.cancel() ?: throw ScriptCancelException()
-        Storage.automatedScripts.remove(automatedScript)
+    fun cancel(automatedScript: AutomatedScript, cancelTask: Boolean = true) {
+        if (cancelTask)
+            automatedScript.bukkitTask?.cancel() ?: throw ScriptCancelException()
+        ScriptExecutor.plugin.logger.log(Level.INFO,
+            "Removing script \"${automatedScript.scriptID}\" from storage: " +
+                    "${Storage.automatedScripts.removeIf { it.scriptID == automatedScript.scriptID }}")
         AutomationConfigManager.deleteScript(automatedScript.scriptID)
     }
 }
