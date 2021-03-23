@@ -7,7 +7,7 @@ plugins {
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 
 group 'parts.lost.mc'
-version '0.9.4'
+version '1.0.0-beta'
 
 sourceCompatibility = targetCompatibility = 8
 
