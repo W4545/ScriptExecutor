@@ -27,7 +27,7 @@ object CreateScript {
         val logFile = if (script.logFile) {
             processBuilder.redirectError(processBuilder.redirectInput())
             processBuilder.redirectErrorStream(true)
-            val formatter = DateTimeFormatter.ofPattern("yy-MM-dd-HH:mm:ss")
+            val formatter = DateTimeFormatter.ofPattern("yy-MM-dd-HH-mm-ss")
             val formatted = LocalDateTime.now().format(formatter)
             File(script.logFileLocation ?: throw ScriptExecutorConfigException("")).mkdirs()
             File("${script.logFileLocation}/${formatted}-$scriptID.log")
