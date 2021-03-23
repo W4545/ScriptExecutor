@@ -1,4 +1,4 @@
-main: parts.lost.mc.scriptexecutor.kotlin.ScriptExecutor
+main: dev.jacaro.mc.scriptexecutor.kotlin.ScriptExecutor
 name: ScriptExecutor
 version: ${version}
 author: Jack Young
