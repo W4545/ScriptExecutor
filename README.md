@@ -17,7 +17,7 @@ Supported Minecraft versions: **1.12.2-1.16.+**
    * Configuration hierarchy allows easier and quicker setup
 
 ### Coming Soon
-- [ ] Automation!
+- [X] Automation!
 - [ ] Wiki
 - [ ] More advanced permissions
  
