@@ -20,6 +20,7 @@ Supported Minecraft versions: **1.12.2-1.16.+**
 - [X] Automation!
 - [ ] Wiki
 - [ ] More advanced permissions
+- [ ] Performance Optimizations
  
 ### Technology
 This plugin is 100% written in Kotlin, an up-and-coming language that can compile into Java JVM byte code.
