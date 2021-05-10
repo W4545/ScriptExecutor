@@ -1,9 +1,5 @@
 package dev.jacaro.mc.scriptexecutor.kotlin.scriptrunner
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 import dev.jacaro.mc.scriptexecutor.kotlin.ScriptExecutor
@@ -13,12 +9,14 @@ import dev.jacaro.mc.scriptexecutor.kotlin.coroutines.async
 import dev.jacaro.mc.scriptexecutor.kotlin.exceptions.ScriptExecutorConfigException
 import dev.jacaro.mc.scriptexecutor.kotlin.storage.RunningScript
 import dev.jacaro.mc.scriptexecutor.kotlin.storage.Storage
+import kotlinx.coroutines.*
 import java.io.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.logging.Level
 
 object CreateScript {
+    @OptIn(DelicateCoroutinesApi::class)
     fun create(script: ScriptConfiguration,
                commandArgs: Array<out String> = emptyArray(),
                sender: CommandSender = ScriptExecutor.plugin.server.consoleSender): String {
