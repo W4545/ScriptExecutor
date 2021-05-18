@@ -1,5 +1,7 @@
 package dev.jacaro.mc.scriptexecutor.kotlin.commands.commandseautomation
 
+import dev.jacaro.mc.scriptexecutor.kotlin.automation.Timing
+import dev.jacaro.mc.scriptexecutor.kotlin.automation.Timings
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -24,6 +26,10 @@ object NextRun : SubCommand {
             if (automatedScript == null) {
                 sender.sendMessage("${ChatColor.RED}Invalid script ID provided.")
                 return true
+            } else {
+                val timing  = automatedScript.scriptConfiguration.additionalConfigurations["timing"] as Timing
+
+                sender.sendMessage("Next Schedule run: ${Timings.dateFormatter.format(timing.date)}")
             }
 
         }

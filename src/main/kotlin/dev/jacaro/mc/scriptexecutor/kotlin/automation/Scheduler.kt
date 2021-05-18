@@ -62,6 +62,7 @@ object Scheduler {
         Storage.automatedScripts.add(automatedScript)
 
         val bukkitTask = initializer {
+            scriptConfiguration.additionalConfigurations["Last Run"] = Date.from(Instant.now())
             CreateScript.create(scriptConfiguration)
             if (automatedScript.deleteOnCompletion)
                 cancel(automatedScript, false)
