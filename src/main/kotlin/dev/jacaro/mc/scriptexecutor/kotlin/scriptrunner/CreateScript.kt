@@ -73,7 +73,8 @@ object CreateScript {
                         }
                         process.waitFor()
                     } catch (ex: IOException) {
-                        ScriptExecutor.plugin.server.consoleSender.sendMessage("IO Worker for script $scriptID has been closed")
+                        ScriptExecutor.plugin.server.consoleSender.sendMessage(
+                            "IO Worker for script $scriptID has been closed")
                     }
                 }
             } else null
