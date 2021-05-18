@@ -11,7 +11,7 @@ data class Timing(val delay: String? = null, val period: String? = null, val dat
 
 object Timings {
 
-    private val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
     init {
         dateFormatter.timeZone = if (ConfigManager.timeZoneOverride == null)
