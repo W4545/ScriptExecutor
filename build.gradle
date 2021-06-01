@@ -29,7 +29,7 @@ task relocateShadowJar(type: ConfigureShadowRelocation) {
 }
 
 shadowJar {
-    classifier = ''
+    archiveClassifier.set('')
     exclude "DebugProbesKt.bin"
 }
 
