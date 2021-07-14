@@ -1,6 +1,6 @@
 # DO NOT EDIT VERSION!
 # This line helps the plugin parse the config better over updates
-version: 1
+version: 2
 
 verbose: false
 
@@ -11,12 +11,12 @@ verbose: false
 
 # Provides default values to all script configurations defined in the config file.
 # These can be overridden in the script configuration.
-Defaults:
+defaults:
   logFileLocation: ./plugins/ScriptExecutor/logs/
   logFile: true
   wrapOutput: false
 
-Scripts:
+scripts:
   hello:
     commands: [java, --version]
     default:

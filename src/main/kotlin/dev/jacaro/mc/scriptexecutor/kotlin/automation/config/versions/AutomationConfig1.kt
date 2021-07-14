@@ -6,6 +6,7 @@ import dev.jacaro.mc.scriptexecutor.kotlin.automation.Scheduler
 import dev.jacaro.mc.scriptexecutor.kotlin.automation.Timing
 import dev.jacaro.mc.scriptexecutor.kotlin.automation.Timings
 import dev.jacaro.mc.scriptexecutor.kotlin.config.UnresolvedScriptConfiguration
+import dev.jacaro.mc.scriptexecutor.kotlin.config.UnresolvedScriptConfiguration.Companion.loadValues
 import dev.jacaro.mc.scriptexecutor.kotlin.config.versions.one.ConfigVersion1
 import dev.jacaro.mc.scriptexecutor.kotlin.exceptions.ScriptExecutorConfigException
 import dev.jacaro.mc.scriptexecutor.kotlin.storage.AutomatedScript
@@ -26,7 +27,7 @@ object AutomationConfig1 : AutomationConfig {
 
         val unresolvedScriptConfiguration = UnresolvedScriptConfiguration("automated", "generated")
 
-        ConfigVersion1.loadValues(fileSection.getConfigurationSection("configuration"), unresolvedScriptConfiguration)
+        loadValues(fileSection.getConfigurationSection("configuration"), unresolvedScriptConfiguration)
 
         val configuration =
             unresolvedScriptConfiguration.map() ?: throw ScriptExecutorConfigException("automated script")

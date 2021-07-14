@@ -1,15 +1,15 @@
 package dev.jacaro.mc.scriptexecutor.kotlin.config.versions.one
 
-import org.bukkit.configuration.ConfigurationSection
 import dev.jacaro.mc.scriptexecutor.kotlin.ScriptExecutor
 import dev.jacaro.mc.scriptexecutor.kotlin.config.ScriptConfiguration
 import dev.jacaro.mc.scriptexecutor.kotlin.config.UnresolvedScriptConfiguration
+import dev.jacaro.mc.scriptexecutor.kotlin.config.UnresolvedScriptConfiguration.Companion.loadValues
 import dev.jacaro.mc.scriptexecutor.kotlin.config.versions.ConfigVersion
 import dev.jacaro.mc.scriptexecutor.kotlin.exceptions.ScriptExecutorConfigException
 
-object ConfigVersion1: ConfigVersion {
+class ConfigVersion1(private val scriptsTagName: String, private val defaultsTagName: String, version: Int = 1): ConfigVersion {
 
-    override val configVersion: Int = 1
+    override val configVersion: Int = version
 
     override val verbose: Boolean
         get() = ScriptExecutor.plugin.config.getBoolean("verbose")
@@ -18,12 +18,12 @@ object ConfigVersion1: ConfigVersion {
         get() = ScriptExecutor.plugin.config.getString("timezone")
 
     override fun getScriptNames(): List<String> {
-        return ScriptExecutor.plugin.config.getConfigurationSection("Scripts")?.getKeys(false)?.toList()
+        return ScriptExecutor.plugin.config.getConfigurationSection(scriptsTagName)?.getKeys(false)?.toList()
                 ?: emptyList()
     }
 
     override fun getScriptSchemeConfigurations(script: String): List<String> {
-        val scriptConfig = ScriptExecutor.plugin.config.getConfigurationSection("Scripts.$script")
+        val scriptConfig = ScriptExecutor.plugin.config.getConfigurationSection("$scriptsTagName.$script")
         val configurations = scriptConfig?.getConfigurationSection("configurations")
             ?.getValues(false)?.map { it.key }
             ?: emptyList()
@@ -46,25 +46,12 @@ object ConfigVersion1: ConfigVersion {
         }
     }
 
-    internal fun loadValues(configurationSection: ConfigurationSection?, unresolvedScriptConfiguration: UnresolvedScriptConfiguration) {
-
-        configurationSection?.getStringList("commands")?.also {
-            if (it.size != 0)
-                unresolvedScriptConfiguration.commands = it
-        }
-        configurationSection?.getString("workingDirectory")?.also { unresolvedScriptConfiguration.workingDirectory = it }
-
-        configurationSection?.getString("wrapOutput")?.also { unresolvedScriptConfiguration.wrapOutput = it.toBoolean() }
-        configurationSection?.getString("logFileLocation")?.also { unresolvedScriptConfiguration.logFileLocation = it }
-        configurationSection?.getString("logFile")?.also { unresolvedScriptConfiguration.logFile = it.toBoolean() }
-    }
-
     override fun getScript(name: String, configurationScheme: String): ScriptConfiguration? {
         val unresolvedScriptConfiguration = UnresolvedScriptConfiguration(name, configurationScheme)
         val config = ScriptExecutor.plugin.config
-        loadValues(config.getConfigurationSection("Defaults"), unresolvedScriptConfiguration)
+        loadValues(config.getConfigurationSection(defaultsTagName), unresolvedScriptConfiguration)
 
-        val scriptRoot = config.getConfigurationSection("Scripts.$name")
+        val scriptRoot = config.getConfigurationSection("$scriptsTagName.$name")
         scriptRoot?.getStringList("commands")?.also { unresolvedScriptConfiguration.commands = it }
         loadValues(scriptRoot?.getConfigurationSection("default"), unresolvedScriptConfiguration)
         loadValues(scriptRoot?.getConfigurationSection("configurations.$configurationScheme"), unresolvedScriptConfiguration)
