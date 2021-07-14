@@ -17,10 +17,10 @@ class ConfigVersion1(private val scriptsTagName: String, private val defaultsTag
     override val timeZoneOverride: String?
         get() = ScriptExecutor.plugin.config.getString("timezone")
 
-    override fun getScriptNames(): List<String> {
-        return ScriptExecutor.plugin.config.getConfigurationSection(scriptsTagName)?.getKeys(false)?.toList()
-                ?: emptyList()
-    }
+    override fun getScriptNames(): List<String> =
+        ScriptExecutor.plugin.config.getConfigurationSection(scriptsTagName)
+            ?.getKeys(false)?.toList()
+            ?: emptyList()
 
     override fun getScriptSchemeConfigurations(script: String): List<String> {
         val scriptConfig = ScriptExecutor.plugin.config.getConfigurationSection("$scriptsTagName.$script")
@@ -34,15 +34,13 @@ class ConfigVersion1(private val scriptsTagName: String, private val defaultsTag
             configurations.sorted()
     }
 
-    override fun getScriptsFromScheme(configurationScheme: String): List<ScriptConfiguration> {
-        return getScriptNames().map { getScript(it, configurationScheme) ?: throw ScriptExecutorConfigException(it) }
+    override fun getScriptsFromScheme(configurationScheme: String): List<ScriptConfiguration> = getScriptNames().map {
+        getScript(it, configurationScheme) ?: throw ScriptExecutorConfigException(it)
     }
 
-    override fun getScripts(): List<ScriptConfiguration> {
-        return getScriptNames().flatMap { script ->
-            getScriptSchemeConfigurations(script).map {
-                getScript(script, it) ?: throw ScriptExecutorConfigException(script)
-            }
+    override fun getScripts(): List<ScriptConfiguration> = getScriptNames().flatMap { script ->
+        getScriptSchemeConfigurations(script).map { scriptName ->
+            getScript(script, scriptName) ?: throw ScriptExecutorConfigException(script)
         }
     }
 
