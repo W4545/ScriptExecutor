@@ -6,7 +6,6 @@ import dev.jacaro.mc.scriptexecutor.kotlin.config.ScriptConfiguration
 import dev.jacaro.mc.scriptexecutor.kotlin.config.UnresolvedScriptConfiguration
 import dev.jacaro.mc.scriptexecutor.kotlin.config.versions.ConfigVersion
 import dev.jacaro.mc.scriptexecutor.kotlin.exceptions.ScriptExecutorConfigException
-import java.util.*
 
 object ConfigVersion1: ConfigVersion {
 
@@ -19,15 +18,15 @@ object ConfigVersion1: ConfigVersion {
         get() = ScriptExecutor.plugin.config.getString("timezone")
 
     override fun getScriptNames(): List<String> {
-        return ScriptExecutor.plugin.config.getConfigurationSection("Scripts")?.getKeys(false)?.toMutableList()
-                ?: Collections.emptyList()
+        return ScriptExecutor.plugin.config.getConfigurationSection("Scripts")?.getKeys(false)?.toList()
+                ?: emptyList()
     }
 
     override fun getScriptSchemeConfigurations(script: String): List<String> {
         val scriptConfig = ScriptExecutor.plugin.config.getConfigurationSection("Scripts.$script")
         val configurations = scriptConfig?.getConfigurationSection("configurations")
             ?.getValues(false)?.map { it.key }
-            ?: Collections.emptyList()
+            ?: emptyList()
 
         return if (scriptConfig?.getConfigurationSection("default") != null)
             configurations.plus("default").sorted()
