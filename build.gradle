@@ -50,5 +50,5 @@ compileTestKotlin {
     }
 }
 
-//tasks.build.dependsOn(shadowJar)
-//tasks.shadowJar.dependsOn(tasks.relocateShadowJar)
+tasks.build.dependsOn(shadowJar)
+tasks.shadowJar.dependsOn(tasks.relocateShadowJar)
