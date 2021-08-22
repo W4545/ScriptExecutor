@@ -7,7 +7,6 @@ import dev.jacaro.mc.scriptexecutor.kotlin.automation.Timing
 import dev.jacaro.mc.scriptexecutor.kotlin.automation.Timings
 import dev.jacaro.mc.scriptexecutor.kotlin.config.UnresolvedScriptConfiguration
 import dev.jacaro.mc.scriptexecutor.kotlin.config.UnresolvedScriptConfiguration.Companion.loadValues
-import dev.jacaro.mc.scriptexecutor.kotlin.config.versions.one.ConfigVersion1
 import dev.jacaro.mc.scriptexecutor.kotlin.exceptions.ScriptExecutorConfigException
 import dev.jacaro.mc.scriptexecutor.kotlin.storage.AutomatedScript
 import java.lang.RuntimeException
