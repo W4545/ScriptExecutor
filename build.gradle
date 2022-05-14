@@ -30,7 +30,7 @@ task relocateShadowJar(type: ConfigureShadowRelocation) {
 
 shadowJar {
     archiveClassifier.set('')
-    exclude "DebugProbesKt.bin"
+    //exclude "DebugProbesKt.bin"
 }
 
 processResources {
@@ -50,5 +50,14 @@ compileTestKotlin {
     }
 }
 
+task installPlugin() {
+    delete("testServer/plugins/ScriptExecutor-" + version + '.jar')
+    copy {
+        from('build/libs/ScriptExecutor-' + version + '.jar')
+        into('testServer/plugins')
+    }
+}
+
 tasks.build.dependsOn(shadowJar)
 tasks.shadowJar.dependsOn(tasks.relocateShadowJar)
+tasks.installPlugin.dependsOn(tasks.build)

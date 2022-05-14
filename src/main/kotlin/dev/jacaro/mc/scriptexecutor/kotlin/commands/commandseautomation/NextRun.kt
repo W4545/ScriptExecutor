@@ -29,6 +29,11 @@ object NextRun : SubCommand {
             } else {
                 val timing  = automatedScript.scriptConfiguration.additionalConfigurations["timing"] as Timing
 
+                if (timing.date == null) {
+                    sender.sendMessage("${ChatColor.RED}Next Run command cannot currently determine the next run of a delay based script.")
+                    return true
+                }
+
                 sender.sendMessage("Next Schedule run: ${Timings.dateFormatter.format(timing.date)}")
             }
 
