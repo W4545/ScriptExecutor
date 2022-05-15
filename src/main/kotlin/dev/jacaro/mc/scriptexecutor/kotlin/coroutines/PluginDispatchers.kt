@@ -2,6 +2,7 @@ package dev.jacaro.mc.scriptexecutor.kotlin.coroutines
 
 import kotlinx.coroutines.Dispatchers
 import dev.jacaro.mc.scriptexecutor.kotlin.ScriptExecutor
+import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext
 
 object PluginDispatchers {
@@ -15,8 +16,16 @@ object PluginDispatchers {
     }
 }
 
+
 val Dispatchers.async: CoroutineContext
     get() = PluginDispatchers.async
 
 val Dispatchers.sync: CoroutineContext
     get() = PluginDispatchers.sync
+
+
+val ioCoroutineScope = CoroutineScope(Dispatchers.IO)
+
+val synchronousCoroutineScope = CoroutineScope(Dispatchers.sync)
+
+val asyncCoroutineScope = CoroutineScope(Dispatchers.async)
