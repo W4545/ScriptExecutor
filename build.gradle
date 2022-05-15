@@ -52,9 +52,11 @@ compileTestKotlin {
 
 task installPlugin() {
     delete("testServer/plugins/ScriptExecutor-" + version + '.jar')
-    copy {
-        from('build/libs/ScriptExecutor-' + version + '.jar')
-        into('testServer/plugins')
+    doLast {
+        copy {
+            from('build/libs/ScriptExecutor-' + version + '.jar')
+            into('testServer/plugins')
+        }
     }
 }
 
