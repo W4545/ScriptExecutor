@@ -30,7 +30,7 @@ jobs:
     - name: Renaming
       run: mv ./build/libs/*.jar ./build/libs/ScriptExecutor-latest.jar
     - name: Setting Environmental Variables
-      run: echo "SHORT_SHA=`git rev-parse --short HEAD`" >> $GITHUB_ENV
+      run: echo "SHORT_SHA=`git rev-parse --short HEAD`" >> $SHORT_SHA
     - name: Automatic Releases
       uses: marvinpinto/action-automatic-releases@latest
       with:
