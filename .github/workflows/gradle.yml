@@ -30,14 +30,14 @@ jobs:
     - name: Renaming
       run: mv ./build/libs/*.jar ./build/libs/ScriptExecutor-latest.jar
     - name: Setting Environmental Variables
-      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      run: echo "SHORT_SHA=`git rev-parse --short HEAD`" >> $GITHUB_ENV
     - name: Automatic Releases
       uses: marvinpinto/action-automatic-releases@latest
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         automatic_release_tag: "latest"
         prerelease: true
-        title: ${{ format('Development Build - {0}.{1}', github.ref, steps.vars.outputs.sha_short) }}
+        title: ${{ format('Development Build - {0}', SHORT_SHA) }}
         files: |
           LICENSE.txt
           build/libs/*.jar
