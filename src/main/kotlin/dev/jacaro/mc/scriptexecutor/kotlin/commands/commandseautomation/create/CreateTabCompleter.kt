@@ -4,6 +4,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import dev.jacaro.mc.scriptexecutor.kotlin.config.ConfigManager
+import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.endsWith
 
 
@@ -21,7 +22,7 @@ object CreateTabCompleter : TabCompleter {
                     if (args[3].count { it == '-' } < 2)
                         mutableListOf(args[3] + "-")
                     else
-                        MutableList(0) { "" }
+                        emptyMutableList()
                 } else {
                     if (args[3].all { it.isDigit() } && args[3].length == 4)
                         arrayOf("-", "s", "m", "h", "d").map { args[3] + it }.toMutableList()
@@ -29,20 +30,20 @@ object CreateTabCompleter : TabCompleter {
                         arrayOf("s", "m", "h", "d").map { args[3] + it }.toMutableList()
                 }
             }
-            else MutableList(0) { "" }
+            else emptyMutableList()
         }
         5 -> {
             if (args[4].endsWith(digits) && args[4].count { it == ':' } == 0)
                 arrayOf("-", "s", "m", "h", "d", ":").map { args[4] + it }.toMutableList()
             else
-                MutableList(0) { "" }
+                emptyMutableList()
         }
         6 -> {
             if (args[5].endsWith(digits))
                 arrayOf("s", "m", "h", "d").map { args[5] + it }.toMutableList()
             else
-                MutableList(0) { "" }
+                emptyMutableList()
         }
-        else -> MutableList(0) { "" }
+        else -> emptyMutableList()
     }
 }

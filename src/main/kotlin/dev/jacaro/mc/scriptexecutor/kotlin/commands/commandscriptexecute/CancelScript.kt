@@ -4,6 +4,7 @@ import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
+import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.HelpNotes
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.SubCommand
 import dev.jacaro.mc.scriptexecutor.kotlin.storage.Storage
@@ -49,6 +50,6 @@ object CancelScript: SubCommand {
         return if (args.size == 2)
             Storage.runningScripts.map { it.id }.toMutableList()
         else
-            MutableList(0) { "" }
+            emptyMutableList()
     }
 }

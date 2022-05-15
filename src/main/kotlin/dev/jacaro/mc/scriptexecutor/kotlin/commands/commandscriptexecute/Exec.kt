@@ -8,6 +8,7 @@ import org.bukkit.entity.Player
 import dev.jacaro.mc.scriptexecutor.kotlin.config.ConfigManager
 import dev.jacaro.mc.scriptexecutor.kotlin.config.ScriptConfiguration
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
+import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.SubCommand
 import dev.jacaro.mc.scriptexecutor.kotlin.scriptrunner.CreateScript
 
@@ -53,7 +54,7 @@ object Exec: SubCommand {
         return when (args.size) {
             2 -> ConfigManager.getScriptNames().toMutableList()
             3 -> ConfigManager.getScriptSchemeConfigurations(args[1]).toMutableList()
-            else -> MutableList(0) { "" }
+            else -> emptyMutableList()
         }
     }
 }

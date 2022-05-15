@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender
 import dev.jacaro.mc.scriptexecutor.kotlin.commands.CommandScriptExecute
 import dev.jacaro.mc.scriptexecutor.kotlin.config.ConfigManager
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
+import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.SubCommand
 
 object TestConfiguration: SubCommand {
@@ -45,7 +46,7 @@ object TestConfiguration: SubCommand {
         return when (args.size) {
             2 -> ConfigManager.getScriptNames().toMutableList()
             3 -> ConfigManager.getScriptSchemeConfigurations(args[1]).toMutableList()
-            else -> MutableList(0) { "" }
+            else -> emptyMutableList()
         }
     }
 }

@@ -5,6 +5,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import dev.jacaro.mc.scriptexecutor.kotlin.config.ConfigManager
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
+import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.SubCommand
 
 object ScriptList: SubCommand {
@@ -30,7 +31,5 @@ object ScriptList: SubCommand {
         command: Command,
         alias: String,
         args: Array<out String>
-    ): MutableList<String> {
-        return MutableList(0) { "" }
-    }
+    ): MutableList<String> = emptyMutableList()
 }

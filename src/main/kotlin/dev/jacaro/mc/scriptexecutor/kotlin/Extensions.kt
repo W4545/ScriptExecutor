@@ -6,3 +6,5 @@ fun String.endsWith(array: Array<Char>): Boolean {
             return true
     return false
 }
+
+fun <T> emptyMutableList() : MutableList<T> = ArrayList(0)
