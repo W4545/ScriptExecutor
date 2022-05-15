@@ -25,7 +25,6 @@ object Scheduler {
 
     fun schedule(scriptConfiguration: ScriptConfiguration, date: Date, interval: Long) : AutomatedScript {
         val time: Long = date.time - Date.from(Instant.now()).time
-        ScriptExecutor.plugin.logger.log(Level.INFO, (time / 1000).toString())
         return if (time < 0)
             schedule(scriptConfiguration, 0L, interval)
         else
