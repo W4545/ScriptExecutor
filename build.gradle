@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.5.31'
-    id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.21'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
@@ -17,8 +17,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
-    compileOnly group: 'org.spigotmc', name: 'spigot-api', version: '1.17.1-R0.1-SNAPSHOT'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
+    compileOnly group: 'org.spigotmc', name: 'spigot-api', version: '1.18.2-R0.1-SNAPSHOT'
     //testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
@@ -40,13 +40,13 @@ processResources {
 compileKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
-        freeCompilerArgs = ['-Xopt-in=kotlin.RequiresOptIn']
+        // freeCompilerArgs = ['-Xopt-in=kotlin.RequiresOptIn']
     }
 }
 compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
-        freeCompilerArgs = ['-Xopt-in=kotlin.RequiresOptIn']
+        // freeCompilerArgs = ['-Xopt-in=kotlin.RequiresOptIn']
     }
 }
 
