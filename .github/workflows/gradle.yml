@@ -42,7 +42,7 @@ jobs:
         prerelease: true
         title: ${{ format('Development Build - {0}-{1}', steps.vars.outputs.branch, steps.vars.outputs.sha_short) }}
         files: |
-          LICENSE.txt
+          LICENSE
           build/libs/*.jar
     - name: Artifacts
       uses: actions/upload-artifact@v2

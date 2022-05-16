@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id "com.github.hierynomus.license" version "0.16.1"
 }
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
@@ -31,6 +32,13 @@ task relocateShadowJar(type: ConfigureShadowRelocation) {
 shadowJar {
     archiveClassifier.set('')
     //exclude "DebugProbesKt.bin"
+}
+
+license {
+    header rootProject.file('HEADER')
+    strictCheck true
+    exclude "**/*.yml"
+    ext.year = Calendar.getInstance().get(Calendar.YEAR)
 }
 
 processResources {
