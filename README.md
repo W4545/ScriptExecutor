@@ -24,7 +24,7 @@ Supported Minecraft versions: **1.12.2-1.18.+**
 - [ ] Performance Optimizations
 
 ### Documentation
-Documentation can be found under the wiki page on github [here](https://github.com/W4545/ScriptExecutor/wiki)
+Documentation can be found under the wiki page on github [here](https://github.com/W4545/ScriptExecutor/wiki).
  
 ### Technology
 This plugin is 100% written in Kotlin, an up-and-coming language that can compile into Java JVM byte code.
