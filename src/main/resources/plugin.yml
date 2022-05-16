@@ -12,4 +12,4 @@ commands:
   seautomate:
     description: Setup an automation for a script
     aliases: sea
-    permission: scriptexecitor.scriptexecute.automate
+    permission: scriptexecitor.automate
