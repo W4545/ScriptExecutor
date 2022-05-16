@@ -3,7 +3,7 @@
 ![Java CI](https://github.com/jack4545/ScriptExecutor/workflows/Java%20CI/badge.svg)
 
 A Minecraft Spigot Server plugin that adds the ability to execute commands/scripts on the native system. 
-Supported Minecraft versions: **1.12.2-1.16.+**
+Supported Minecraft versions: **1.12.2-1.18.+**
 
 ### Features
  * Specify commands
@@ -11,6 +11,7 @@ Supported Minecraft versions: **1.12.2-1.16.+**
  * Generate log files
  * Wrap output of process to player/console
  * Permissions (Basic)  
+ * Automation!
  * Advanced configurations:
    * Specify multiple configurations
    * Infers configurations based on context (Player/Console)
@@ -18,9 +19,12 @@ Supported Minecraft versions: **1.12.2-1.16.+**
 
 ### Coming Soon
 - [X] Automation!
-- [ ] Wiki
+- [X] Wiki
 - [ ] More advanced permissions
 - [ ] Performance Optimizations
+
+### Documentation
+Documentation can be found under the wiki page on github [here](https://github.com/W4545/ScriptExecutor/wiki).
  
 ### Technology
 This plugin is 100% written in Kotlin, an up-and-coming language that can compile into Java JVM byte code.
