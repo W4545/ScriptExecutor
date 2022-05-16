@@ -40,7 +40,7 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         automatic_release_tag: ${{ format('DevBuild{0}-{1}', github.run_number, steps.vars.outputs.sha_short) }}
         prerelease: true
-        title: ${{ format('Development Build - {0}-{1}', steps.vars.outputs.branch, steps.vars.outputs.sha_short) }}
+        title: ${{ format('Development Build {0} - {1}-{2}', github.run_number, steps.vars.outputs.branch, steps.vars.outputs.sha_short) }}
         files: |
           LICENSE
           build/libs/*.jar
