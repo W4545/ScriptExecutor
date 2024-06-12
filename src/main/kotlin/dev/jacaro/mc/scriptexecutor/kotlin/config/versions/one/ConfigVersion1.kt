@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 Jack Young
+ * Copyright (C) 2024 Jack Young
  * This file is part of ScriptExecutor <https://github.com/W4545/ScriptExecutor>.
  *
  * ScriptExecutor is free software: you can redistribute it and/or modify
