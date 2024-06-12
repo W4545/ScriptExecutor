@@ -23,7 +23,7 @@ dependencies {
 
 shadowJar {
     archiveClassifier.set('')
-    archiveBaseName.set('scriptexecutor')
+    archiveBaseName.set('Scriptexecutor')
     enableRelocation = true
     relocationPrefix = "scriptexecutor"
     //exclude "DebugProbesKt.bin"
