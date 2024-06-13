@@ -3,7 +3,7 @@
 ![Java CI](https://github.com/W4545/ScriptExecutor/workflows/Java%20CI/badge.svg)
 
 A Minecraft Spigot Server plugin that adds the ability to execute commands/scripts on the native system. 
-Supported Minecraft versions: **1.12.2-1.18.+**
+Supported Minecraft versions: **1.12.2-1.20.+**
 
 ### Features
  * Specify commands
