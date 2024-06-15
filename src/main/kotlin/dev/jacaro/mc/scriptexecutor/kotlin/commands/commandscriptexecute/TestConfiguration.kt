@@ -25,7 +25,6 @@ import dev.jacaro.mc.scriptexecutor.kotlin.config.ConfigManager
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
 import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.SubCommand
-import java.io.ObjectInputFilter.Config
 
 object TestConfiguration: SubCommand {
     override val name = "testconfiguration"
