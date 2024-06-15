@@ -60,16 +60,22 @@ object Exec: SubCommand {
 
         if (script == null)
             sender.sendMessage("${ChatColor.RED}Unable to locate script entry \"${args[0]}\" with " +
-                    "scheme \"${args[1]}\" in config")
-        else
-            CreateScript.create(script, commandArgs, sender)
+                    "scheme \"${if(args.size == 2) args[1] else "Unknown"}\" in config")
+        else {
+            if (sender.hasPermission("scriptexecutor.script.${script.name}"))
+                CreateScript.create(script, commandArgs, sender)
+            else
+                sender.sendMessage("${ChatColor.RED}You do not have permission to execute script ${script.name}.")
+        }
 
         return true
     }
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): MutableList<String> {
         return when (args.size) {
-            2 -> ConfigManager.getScriptNames().toMutableList()
+            2 -> ConfigManager.getScriptNames().filter { script ->
+                sender.hasPermission("scriptexecutor.script.$script")
+            }.toMutableList()
             3 -> ConfigManager.getScriptSchemeConfigurations(args[1]).toMutableList()
             else -> emptyMutableList()
         }

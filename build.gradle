@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'dev.jacaro.mc'
-version '1.1.0'
+version '1.2.0-dev'
 
 sourceCompatibility = targetCompatibility = 8
 
@@ -53,7 +53,7 @@ compileTestKotlin {
     }
 }
 
-task installPlugin() {
+tasks.register('installPlugin') {
     delete("testServer/plugins/ScriptExecutor-" + version + '.jar')
     doLast {
         copy {

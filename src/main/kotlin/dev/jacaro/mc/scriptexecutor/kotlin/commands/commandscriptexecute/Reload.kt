@@ -40,6 +40,7 @@ object Reload: SubCommand {
         else if (Storage.runningScripts.isNotEmpty())
             sender.sendMessage("${ChatColor.RED}No scripts can be running to reload config.")
         ScriptExecutor.plugin.reloadConfig()
+        ScriptExecutor.plugin.registerScriptPermissions()
         sender.sendMessage("${ChatColor.BLUE}Config reloaded.")
 
         return true

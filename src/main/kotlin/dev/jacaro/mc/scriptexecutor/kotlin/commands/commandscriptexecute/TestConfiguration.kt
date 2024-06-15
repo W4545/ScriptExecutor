@@ -25,6 +25,7 @@ import dev.jacaro.mc.scriptexecutor.kotlin.config.ConfigManager
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
 import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.SubCommand
+import java.io.ObjectInputFilter.Config
 
 object TestConfiguration: SubCommand {
     override val name = "testconfiguration"
@@ -49,7 +50,12 @@ object TestConfiguration: SubCommand {
                 return true
             }
         }
-        sender.sendMessage(script?.verbose ?: "${ChatColor.RED} Unable to find or infer configuration.")
+        if (script != null && sender.hasPermission("scriptexecutor.script.${script.name}"))
+            sender.sendMessage(script.verbose)
+        else if (script == null)
+            sender.sendMessage("${ChatColor.RED} Unable to find or infer configuration.")
+        else
+            sender.sendMessage("${ChatColor.RED}You do not have permission to execute script ${script.name}.")
 
         return true
     }
@@ -60,9 +66,12 @@ object TestConfiguration: SubCommand {
         alias: String,
         args: Array<out String>
     ): MutableList<String> {
+        val scriptNames = ConfigManager.getScriptNames().filter { string ->
+            sender.hasPermission("scriptexecutor.script.$string")
+        }
         return when (args.size) {
-            2 -> ConfigManager.getScriptNames().toMutableList()
-            3 -> ConfigManager.getScriptSchemeConfigurations(args[1]).toMutableList()
+            2 -> scriptNames.toMutableList()
+            3 -> ConfigManager.getScriptSchemeConfigurations(if (scriptNames.contains(args[1])) args[1] else "").toMutableList()
             else -> emptyMutableList()
         }
     }

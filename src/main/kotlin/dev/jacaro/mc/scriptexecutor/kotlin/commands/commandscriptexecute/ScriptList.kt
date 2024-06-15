@@ -37,8 +37,12 @@ object ScriptList: SubCommand {
 
         if (args.isNotEmpty())
             sender.sendMessage("${ChatColor.RED}This subcommand does not take any arguments.")
-        else
-            sender.sendMessage("Available scripts: ${ConfigManager.getScriptNames().joinToString(", ")}")
+        else {
+            val scriptNames = ConfigManager.getScriptNames().filter { script ->
+                sender.hasPermission("scriptexecutor.script.$script")
+            }
+            sender.sendMessage("Available scripts: ${scriptNames.joinToString(", ")}")
+        }
 
         return true
     }

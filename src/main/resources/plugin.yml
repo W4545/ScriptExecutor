@@ -13,3 +13,41 @@ commands:
     description: Setup an automation for a script
     aliases: sea
     permission: scriptexecutor.automate
+
+permissions:
+  scriptexecutor.scriptexecute:
+    description: Allow access to scriptexecutor command
+
+  scriptexecutor.scriptexecute.*:
+    children:
+      scriptexecutor.scriptexecute.exec: true
+      scriptexecutor.scriptexecute.help: true
+      scriptexecutor.scriptexecute.cancel: true
+      scriptexecutor.scriptexecute.reload: true
+      scriptexecutor.scriptexecute.running: true
+      scriptexecutor.scriptexecute.list: true
+      scriptexecutor.scriptexecute.testconfiguration: true
+
+  scriptexecutor.scriptexecute.exec:
+    description: Allow access to execute script sub-command
+
+  scriptexecutor.scriptexecute.help:
+    description: Allow access to help sub-command
+
+  scriptexecutor.scriptexecute.cancel:
+    description: Allow access to cancel script sub-command
+
+  scriptexecutor.scriptexecute.reload:
+    description: Allow access to plugin reload command
+
+  scriptexecutor.scriptexecute.running:
+    description: Allow access to running scripts sub-command
+
+  scriptexecutor.scriptexecute.list:
+    description: Allow access to list register scripts sub-command
+
+  scriptexecutor.scriptexecute.testconfiguration:
+    description: Allow access to test configuration sub-command
+
+  scriptexecutor.script.*:
+    description: Allow user to interact with all scripts

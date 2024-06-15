@@ -23,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import dev.jacaro.mc.scriptexecutor.kotlin.automation.config.AutomationConfigManager
 import dev.jacaro.mc.scriptexecutor.kotlin.commands.CommandSEAutomation
 import dev.jacaro.mc.scriptexecutor.kotlin.commands.CommandScriptExecute
+import dev.jacaro.mc.scriptexecutor.kotlin.config.ConfigManager
 import dev.jacaro.mc.scriptexecutor.kotlin.coroutines.asyncCoroutineScope
 import dev.jacaro.mc.scriptexecutor.kotlin.coroutines.ioCoroutineScope
 import dev.jacaro.mc.scriptexecutor.kotlin.coroutines.synchronousCoroutineScope
@@ -30,6 +31,7 @@ import dev.jacaro.mc.scriptexecutor.kotlin.storage.Storage
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import org.bukkit.permissions.Permission
 import java.io.File
 import java.io.IOException
 import java.util.logging.Level
@@ -38,6 +40,7 @@ class ScriptExecutor : JavaPlugin() {
 
     lateinit var automationConfig: FileConfiguration
     lateinit var automationFile: File
+    private val registeredPermissions = mutableListOf<Permission>()
 
     override fun onEnable() {
         plugin = this
@@ -50,6 +53,7 @@ class ScriptExecutor : JavaPlugin() {
 
         CommandScriptExecute.initialize()
         CommandSEAutomation.initialize()
+        registerScriptPermissions()
 
         logger.log(Level.INFO, "ScriptExecutor Enabled")
     }
@@ -104,6 +108,22 @@ class ScriptExecutor : JavaPlugin() {
         for (it in AutomationConfigManager.automatedScriptNames) {
             AutomationConfigManager.loadScript(it)
             logger.log(Level.INFO, "Script $it loaded.")
+        }
+    }
+
+    fun registerScriptPermissions() {
+        val scripts = ConfigManager.getScriptNames()
+
+        for (perms in registeredPermissions) {
+            plugin.server.pluginManager.removePermission(perms)
+        }
+        registeredPermissions.clear()
+
+        for (script in scripts) {
+            val permission = Permission("scriptexecutor.script.$script")
+            permission.addParent("scriptexecutor.script.*", true)
+            plugin.server.pluginManager.addPermission(permission)
+            registeredPermissions.add(permission)
         }
     }
 

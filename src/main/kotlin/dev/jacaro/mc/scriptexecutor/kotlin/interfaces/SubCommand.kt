@@ -24,4 +24,6 @@ import org.bukkit.command.TabCompleter
 interface SubCommand : CommandExecutor, TabCompleter {
     val name: String
     val helpNotes: HelpNotes
+    val permissionName: String
+        get() = name
 }
