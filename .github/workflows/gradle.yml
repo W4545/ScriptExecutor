@@ -12,6 +12,7 @@ on:
       - 'gradle/**'
       - 'gradlew'
       - '.github/workflows/gradle.yml'
+      - '.gitattributes'
 
 jobs:
   build:
