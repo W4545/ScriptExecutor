@@ -17,8 +17,6 @@
  */
 package dev.jacaro.mc.scriptexecutor.kotlin.constructs
 
-import dev.jacaro.mc.scriptexecutor.kotlin.automation.config.versions.AutomationConfig
-import dev.jacaro.mc.scriptexecutor.kotlin.config.ConfigManager
 import dev.jacaro.mc.scriptexecutor.kotlin.config.ScriptConfiguration
 import dev.jacaro.mc.scriptexecutor.kotlin.config.versions.ConfigVersion
 import dev.jacaro.mc.scriptexecutor.kotlin.exceptions.ScriptInvalidPermissionsException
@@ -26,7 +24,6 @@ import dev.jacaro.mc.scriptexecutor.kotlin.storage.AutomatedScript
 import dev.jacaro.mc.scriptexecutor.kotlin.storage.RunningScript
 import dev.jacaro.mc.scriptexecutor.kotlin.storage.Storage
 import org.bukkit.command.CommandSender
-import sun.font.ScriptRunData.getScript
 
 fun ConfigVersion.getScriptOrThrow(sender: CommandSender, name: String, configuration: String): ScriptConfiguration? {
     return if (name !in getScriptNames())

@@ -22,7 +22,6 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.automatedScriptsAccessible
-import dev.jacaro.mc.scriptexecutor.kotlin.constructs.runningScriptsAccessible
 import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.SubCommand
 import dev.jacaro.mc.scriptexecutor.kotlin.storage.Storage

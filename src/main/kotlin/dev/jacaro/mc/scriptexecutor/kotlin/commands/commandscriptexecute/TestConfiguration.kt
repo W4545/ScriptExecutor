@@ -25,10 +25,8 @@ import dev.jacaro.mc.scriptexecutor.kotlin.config.ConfigManager
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.getScriptNamesAccessible
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.getScriptOrThrow
-import dev.jacaro.mc.scriptexecutor.kotlin.constructs.runningScriptsAccessible
 import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.SubCommand
-import dev.jacaro.mc.scriptexecutor.kotlin.storage.Storage
 
 object TestConfiguration: SubCommand {
     override val name = "testconfiguration"
