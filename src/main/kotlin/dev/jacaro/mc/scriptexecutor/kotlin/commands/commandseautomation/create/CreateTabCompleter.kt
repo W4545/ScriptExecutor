@@ -21,6 +21,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import dev.jacaro.mc.scriptexecutor.kotlin.config.ConfigManager
+import dev.jacaro.mc.scriptexecutor.kotlin.constructs.getScriptNamesAccessible
 import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.endsWith
 
@@ -31,7 +32,7 @@ object CreateTabCompleter : TabCompleter {
     override fun onTabComplete(
         sender: CommandSender, command: Command, alias: String, args: Array<out String>
     ): MutableList<String> = when (args.size) {
-        2 -> ConfigManager.getScriptNames().toMutableList()
+        2 -> ConfigManager.getScriptNamesAccessible(sender).toMutableList()
         3 -> ConfigManager.getScriptSchemeConfigurations(args[1]).toMutableList()
         4 -> {
             if (args[3].endsWith(digits)) {

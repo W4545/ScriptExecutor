@@ -49,5 +49,32 @@ permissions:
   scriptexecutor.scriptexecute.testconfiguration:
     description: Allow access to test configuration sub-command
 
+  scriptexecutor.automate:
+    description: Allow access to the script automation command
+
+  scriptexecutor.automate.*:
+    description: Allow access to all sub-commands of the script automation command
+    children:
+      scriptexecutor.automate.create: true
+      scriptexecutor.automate.list: true
+      scriptexecutor.automate.cancel: true
+      scriptexecutor.automate.debug: true
+      scriptexecutor.automate.nextrun: true
+
+  scriptexecutor.automate.create:
+    description: Allow access to the create automated script sub-command
+
+  scriptexecutor.automate.list:
+    description: Allow access to the list automated scripts sub-command
+
+  scriptexecutor.automate.cancel:
+    description: Allow access to the cancel automated script sub-command
+
+  scriptexecutor.automate.debug:
+    description: Allow access to the debug automated script sub-command
+
+  scriptexecutor.automate.nextrun:
+    description: Allow access to the next-run automated script sub-command
+
   scriptexecutor.script.*:
     description: Allow user to interact with all scripts

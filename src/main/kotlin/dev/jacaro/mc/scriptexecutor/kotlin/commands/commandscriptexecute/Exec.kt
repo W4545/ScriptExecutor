@@ -25,6 +25,8 @@ import org.bukkit.entity.Player
 import dev.jacaro.mc.scriptexecutor.kotlin.config.ConfigManager
 import dev.jacaro.mc.scriptexecutor.kotlin.config.ScriptConfiguration
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
+import dev.jacaro.mc.scriptexecutor.kotlin.constructs.getScriptNamesAccessible
+import dev.jacaro.mc.scriptexecutor.kotlin.constructs.getScriptOrThrow
 import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.SubCommand
 import dev.jacaro.mc.scriptexecutor.kotlin.scriptrunner.CreateScript
@@ -35,21 +37,21 @@ object Exec: SubCommand {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         val script: ScriptConfiguration? = when (args.size) {
-            2 -> ConfigManager.getScript(args[0], args[1])
+            2 -> ConfigManager.getScriptOrThrow(sender, args[0], args[1])
             1 -> {
                 if (sender is Player && ConfigManager.getScriptSchemeConfigurations(args[0]).contains("player"))
-                    ConfigManager.getScript(args[0], "player")
+                    ConfigManager.getScriptOrThrow(sender, args[0], "player")
                 else if (sender is ConsoleCommandSender && ConfigManager.getScriptSchemeConfigurations(args[0]).contains("console"))
-                    ConfigManager.getScript(args[0], "console")
+                    ConfigManager.getScriptOrThrow(sender, args[0], "console")
                 else
-                    ConfigManager.getScript(args[0], "default")
+                    ConfigManager.getScriptOrThrow(sender, args[0], "default")
             }
             0 -> {
                 sender.sendMessage("${ChatColor.RED}This command requires an argument")
                 return true
             }
             else -> {
-                ConfigManager.getScript(args[0], args[1])
+                ConfigManager.getScriptOrThrow(sender, args[0], args[1])
             }
         }
 
@@ -62,10 +64,7 @@ object Exec: SubCommand {
             sender.sendMessage("${ChatColor.RED}Unable to locate script entry \"${args[0]}\" with " +
                     "scheme \"${if(args.size == 2) args[1] else "Unknown"}\" in config")
         else {
-            if (sender.hasPermission("scriptexecutor.script.${script.name}"))
-                CreateScript.create(script, commandArgs, sender)
-            else
-                sender.sendMessage("${ChatColor.RED}You do not have permission to execute script ${script.name}.")
+            CreateScript.create(script, commandArgs, sender)
         }
 
         return true
@@ -73,9 +72,7 @@ object Exec: SubCommand {
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): MutableList<String> {
         return when (args.size) {
-            2 -> ConfigManager.getScriptNames().filter { script ->
-                sender.hasPermission("scriptexecutor.script.$script")
-            }.toMutableList()
+            2 -> ConfigManager.getScriptNamesAccessible(sender).toMutableList()
             3 -> ConfigManager.getScriptSchemeConfigurations(args[1]).toMutableList()
             else -> emptyMutableList()
         }

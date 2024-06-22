@@ -21,6 +21,8 @@ import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
+import dev.jacaro.mc.scriptexecutor.kotlin.constructs.getRunningScriptOrThrow
+import dev.jacaro.mc.scriptexecutor.kotlin.constructs.runningScriptsAccessible
 import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.HelpNotes
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.SubCommand
@@ -38,7 +40,7 @@ object CancelScript: SubCommand {
 
         when (args.size) {
             1 -> {
-                val script = Storage.runningScripts.find { it.id == args[0] }
+                val script = Storage.getRunningScriptOrThrow(sender, args[0])
 
                 if (script == null) {
                     sender.sendMessage("${ChatColor.RED}There is no script running with the provided ID.")
@@ -65,7 +67,7 @@ object CancelScript: SubCommand {
         args: Array<out String>
     ): MutableList<String> {
         return if (args.size == 2)
-            Storage.runningScripts.map { it.id }.toMutableList()
+            Storage.runningScriptsAccessible(sender).map { it.id }.toMutableList()
         else
             emptyMutableList()
     }

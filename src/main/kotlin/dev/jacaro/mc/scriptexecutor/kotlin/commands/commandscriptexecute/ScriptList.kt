@@ -22,6 +22,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import dev.jacaro.mc.scriptexecutor.kotlin.config.ConfigManager
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
+import dev.jacaro.mc.scriptexecutor.kotlin.constructs.getScriptNamesAccessible
 import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.SubCommand
 
@@ -38,9 +39,7 @@ object ScriptList: SubCommand {
         if (args.isNotEmpty())
             sender.sendMessage("${ChatColor.RED}This subcommand does not take any arguments.")
         else {
-            val scriptNames = ConfigManager.getScriptNames().filter { script ->
-                sender.hasPermission("scriptexecutor.script.$script")
-            }
+            val scriptNames = ConfigManager.getScriptNamesAccessible(sender)
             sender.sendMessage("Available scripts: ${scriptNames.joinToString(", ")}")
         }
 

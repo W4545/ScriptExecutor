@@ -25,6 +25,7 @@ import dev.jacaro.mc.scriptexecutor.kotlin.automation.Parser
 import dev.jacaro.mc.scriptexecutor.kotlin.automation.Scheduler
 import dev.jacaro.mc.scriptexecutor.kotlin.automation.Timing
 import dev.jacaro.mc.scriptexecutor.kotlin.config.ConfigManager
+import dev.jacaro.mc.scriptexecutor.kotlin.constructs.getScriptOrThrow
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
@@ -37,7 +38,7 @@ object CreateCommandExecutor : CommandExecutor {
             sender.sendMessage("${ChatColor.RED}Incorrect number of arguments provided")
             return true
         }
-        val scriptConfiguration = ConfigManager.getScript(args[0], args[1])
+        val scriptConfiguration = ConfigManager.getScriptOrThrow(sender, args[0], args[1])
 
         if (scriptConfiguration == null) {
             sender.sendMessage("${ChatColor.RED} Unable to find or infer script/configuration.")

@@ -21,6 +21,8 @@ import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import dev.jacaro.mc.scriptexecutor.kotlin.constructs.BasicHelpNotes
+import dev.jacaro.mc.scriptexecutor.kotlin.constructs.getRunningScriptOrThrow
+import dev.jacaro.mc.scriptexecutor.kotlin.constructs.runningScriptsAccessible
 import dev.jacaro.mc.scriptexecutor.kotlin.emptyMutableList
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.SubCommand
 import dev.jacaro.mc.scriptexecutor.kotlin.storage.Storage
@@ -39,10 +41,10 @@ object Running: SubCommand {
                 if (Storage.runningScripts.size == 0)
                     sender.sendMessage("There are no scripts running right now.")
                 else
-                    sender.sendMessage("Running scripts: ${Storage.runningScripts.joinToString(" ") { it.id }}")
+                    sender.sendMessage("Running scripts: ${Storage.runningScriptsAccessible(sender).joinToString(" ") { it.id }}")
             }
             args.size == 1 -> {
-                val runningScript = Storage.runningScripts.find { it.id == args[0] }
+                val runningScript = Storage.getRunningScriptOrThrow(sender, args[0])
                 if (runningScript == null)
                     sender.sendMessage("${ChatColor.RED}There is not a script with an ID \"${args[0]}\" that is running")
                 else
@@ -63,7 +65,7 @@ object Running: SubCommand {
         args: Array<out String>
     ): MutableList<String> {
         return if (args.size == 2)
-            Storage.runningScripts.map { it.id }.toMutableList()
+            Storage.runningScriptsAccessible(sender).map { it.id }.toMutableList()
         else
             emptyMutableList()
     }

@@ -21,6 +21,7 @@ import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import dev.jacaro.mc.scriptexecutor.kotlin.ScriptExecutor
+import dev.jacaro.mc.scriptexecutor.kotlin.exceptions.ScriptInvalidPermissionsException
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.CommandInitializer
 import dev.jacaro.mc.scriptexecutor.kotlin.interfaces.SubCommand
 
@@ -61,9 +62,12 @@ abstract class CommandManager : SubCommand, CommandInitializer {
                     return true
                 }
             }
-
-            subCommand?.onCommand(sender, command, label, args.copyOfRange(1, args.size))
-                ?: sender.sendMessage("${ChatColor.RED}Please provide a valid subcommand. See /$label help for details")
+            try {
+                subCommand?.onCommand(sender, command, label, args.copyOfRange(1, args.size))
+                    ?: sender.sendMessage("${ChatColor.RED}Please provide a valid subcommand. See /$label help for details")
+            } catch (ex: ScriptInvalidPermissionsException) {
+                sender.sendMessage("${ChatColor.RED}${ex.senderMessage}")
+            }
         }
 
         return true
