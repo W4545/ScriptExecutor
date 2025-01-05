@@ -7,7 +7,7 @@ import java.nio.file.Files
 import java.util.*
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "2.0.0"
+    id("org.jetbrains.kotlin.jvm") version "2.1.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("com.github.hierynomus.license") version "0.16.1"
 }
@@ -21,8 +21,8 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
-    compileOnly("org.spigotmc:spigot-api:1.20.6-R0.1-SNAPSHOT")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+    compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
     //testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
@@ -78,7 +78,9 @@ tasks {
     register("installServer") {
         group = "server"
 
-        val semver = (project.property("minecraft_version") as String).split('.')
+//        val semver = (project.property("minecraft_version") as String).split('.')
+        val semver = (project.property("minecraft_version") as String)
+        val channel = (project.property("channel") as String)
 
         val serverDir = File("${project.rootDir}/${project.property("test_server_subdir")}")
         val serverJar = File("${serverDir}/paper.jar")
@@ -89,19 +91,19 @@ tasks {
         }
         doFirst {
             serverDir.mkdirs()
-            val baseUrl = "https://papermc.io/api/v2/projects/paper"
-            val builds = URI("${baseUrl}/version_group/${semver[0]}.${semver[1]}/builds").toURL()
+            val baseUrl = "https://api.papermc.io/v2/projects/paper"
+            val builds = URI("${baseUrl}/versions/$semver/builds").toURL()
 
             val latest = ((JsonSlurper().parseText(builds.readText()) as LazyMap)["builds"] as List<LazyMap>)
                 .reversed()
                 .find {
-                    it["version"] == project.property("minecraft_version")
+                    it["channel"] == channel
                 }!!
 
 
             val fileName = ((latest["downloads"] as LazyMap)["application"] as LazyMap)["name"]
 
-            val jarUrl = URI("${baseUrl}/versions/${latest["version"]}/builds/${latest["build"]}/downloads/${fileName}").toURL()
+            val jarUrl = URI("${baseUrl}/versions/$semver/builds/${latest["build"]}/downloads/${fileName}").toURL()
 
             jarUrl.openStream().use { Files.copy(it, serverJar.toPath()) }
         }

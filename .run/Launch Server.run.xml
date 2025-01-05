@@ -5,7 +5,7 @@
     <option name="PROGRAM_PARAMETERS" value="nogui" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/testServer" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-    <option name="ALTERNATIVE_JRE_PATH" value="corretto-21" />
+    <option name="ALTERNATIVE_JRE_PATH" value="ms-21" />
     <method v="2">
       <option name="Gradle.BeforeRunTask" enabled="false" tasks="installPlugin" externalProjectPath="$PROJECT_DIR$" vmOptions="" scriptParameters="" />
     </method>
